@@ -1,0 +1,14 @@
+table {
+    border-collapse: collapse;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+th,
+td {
+    text-align: left;
+    padding: 8px;
+}
+td select {
+    width: 100%;
+}
