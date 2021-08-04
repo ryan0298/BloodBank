@@ -2,7 +2,9 @@ package dal;
 
 import entity.DonationRecord;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -11,40 +13,54 @@ import java.util.List;
 public class DonationRecordDAL extends GenericDAL<DonationRecord> {
 
     public DonationRecordDAL() {
-        super( DonationRecord.class );
+        super(DonationRecord.class);
     }
 
     @Override
     public List<DonationRecord> findAll() {
-        return findResults( "Account.findAll", null );
+        return findResults("DonationRecord.findAll", null);
     }
 
     @Override
     public DonationRecord findById(int recordId) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("recordId", recordId);
+        return findResult("DonationRecord.findByRecordId", map);
     }
 
     public List<DonationRecord> findByTested(boolean tested) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("tested", tested);
+        return findResults("DonationRecord.findByTested", map);
     }
 
     public List<DonationRecord> findByAdministrator(String administrator) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("administrator", administrator);
+        return findResults("DonationRecord.findByAdministrator", map);
     }
 
     public List<DonationRecord> findByHospital(String username) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("hospital", username);
+        return findResults("DonationRecord.findByHospital", map);
     }
 
     public List<DonationRecord> findByCreated(Date created) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("created", created);
+        return findResults("DonationRecord.findByCreated", map);
     }
 
     public List<DonationRecord> findByPerson(int personId) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("personId", personId);
+        return findResults("DonationRecord.findByPerson", map);
     }
 
     public List<DonationRecord> findByDonation(int donationId) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("donationId", donationId);
+        return findResults("DonationRecord.findByDonation", map);
     }
 }
