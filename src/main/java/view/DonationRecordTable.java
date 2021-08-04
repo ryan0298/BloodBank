@@ -16,7 +16,7 @@ import logic.Logic;
 import logic.LogicFactory;
 
 /**
- *
+ *@author Milad Mobini
  * @author Shariar (Shawn) Emami
  */
 @WebServlet( name = "DonationRecord", urlPatterns = { "/DonationRecordTable" } )

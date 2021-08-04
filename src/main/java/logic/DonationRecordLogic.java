@@ -3,14 +3,19 @@ package logic;
 import common.ValidationException;
 import dal.BloodDonationDAL;
 import dal.DonationRecordDAL;
+import entity.BloodDonation;
 import entity.DonationRecord;
 import entity.Person;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.ObjIntConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,13 +23,13 @@ import java.util.function.ObjIntConsumer;
  */
 public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRecordDAL> {
 
-    public String PERSON_ID = "person_id";
-    public String DONATION_ID = "donation_id";
-    public String TESTED = "tested";
-    public String ADMINISTRATOR = "administrator";
-    public String HOSPITAL = "hospital";
-    public String CREATED = "created";
-    public String ID = "id";
+    public static final String PERSON_ID = "person_id";
+    public static final String DONATION_ID = "donation_id";
+    public static final String TESTED = "tested";
+    public static final String ADMINISTRATOR = "administrator";
+    public static final String HOSPITAL = "hospital";
+    public static final String CREATED = "created";
+    public static final String ID = "id";
 
     DonationRecordLogic() {
         super(new DonationRecordDAL());
@@ -109,14 +114,24 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         //set values on entity
         entity.setAdministrator(admin);
         BloodDonationDAL donationRd = new BloodDonationDAL();
-        entity.setBloodDonation(donationRd.findById(Integer.parseInt(donationId)));
-        entity.setCreated(convertStringToDate(created));
+//        entity.setBloodDonation(donationRd.findById(Integer.parseInt(donationId)));
+BloodDonation yy = new BloodDonation();
+yy.setId(1);
+        entity.setBloodDonation(yy);
+        Date dateCreated = null;
+        try {
+            dateCreated = new SimpleDateFormat("yyyy-MM-dd").parse(created);
+        } catch (ParseException ex) {
+            Logger.getLogger(DonationRecordLogic.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ValidationException("failed to format String=\"" + created + "\" to a date object" + dateCreated, ex);
+        }
+        entity.setCreated(dateCreated);
         entity.setHospital(hospital);
 
 //        PersonDAL person = new PersonDAL(); //Jack needs to implement people first
 //        entity.setPerson(person.findById(Integer.parseInt(personId)));
-        Person person = new Person(); //Temp
-        entity.setPerson(person);     //Temp
+        entity.setPerson(new Person());     //Temp
+
         entity.setTested(Boolean.parseBoolean(tested));
 
         return entity;
@@ -138,7 +153,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
                 e.getId(),
                 (e.getPerson() != null) ? e.getPerson().getId() : "-",
                 (e.getBloodDonation() != null) ? e.getBloodDonation().getId() : "-",
-                e.getTested(),
+                (e.getTested()) ? "Yes" : "No",
                 e.getAdministrator(),
                 e.getHospital(),
                 e.getCreated());
