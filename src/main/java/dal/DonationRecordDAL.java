@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author Milad Mobini
  */
 public class DonationRecordDAL extends GenericDAL<DonationRecord> {

@@ -5,7 +5,6 @@ import dal.BloodDonationDAL;
 import dal.DonationRecordDAL;
 import entity.DonationRecord;
 import entity.Person;
-import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +64,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         return get(() -> dal().findByDonation(donationId));
     }
 
+    @Override
     public DonationRecord createEntity(Map<String, String[]> parameterMap) {
         Objects.requireNonNull(parameterMap, "parameterMap cannot be null");
 
@@ -103,19 +103,18 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         validator.accept(donationId, 10);
         validator.accept(tested, 6);
         validator.accept(admin, 45);
-        validator.accept(hospital, 45);
+        validator.accept(hospital, 65);
         validator.accept(created, 45);
-        
+
         //set values on entity
         entity.setAdministrator(admin);
         BloodDonationDAL donationRd = new BloodDonationDAL();
         entity.setBloodDonation(donationRd.findById(Integer.parseInt(donationId)));
         entity.setCreated(convertStringToDate(created));
         entity.setHospital(hospital);
-        
-//        PersonDAL person = new PersonDAL();
-//        entity.setPerson(person.findById(Integer.parseInt(personId)));
 
+//        PersonDAL person = new PersonDAL(); //Jack needs to implement people first
+//        entity.setPerson(person.findById(Integer.parseInt(personId)));
         Person person = new Person(); //Temp
         entity.setPerson(person);     //Temp
         entity.setTested(Boolean.parseBoolean(tested));
@@ -123,19 +122,22 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         return entity;
     }
 
+    @Override
     public List<String> getColumnNames() {
-        return Arrays.asList("ID", "Person", "Blood Donation", "Tested", "Administrator", "Hospital", "Created");
+        return Arrays.asList("ID", "Person ID", "Blood Donation ID", "Tested", "Administrator", "Hospital", "Created");
     }
 
+    @Override
     public List<String> getColumnCodes() {
         return Arrays.asList(ID, PERSON_ID, DONATION_ID, TESTED, ADMINISTRATOR, HOSPITAL, CREATED);
     }
 
+    @Override
     public List<?> extractDataAsList(DonationRecord e) {
         return Arrays.asList(
                 e.getId(),
-                e.getPerson(),
-                e.getBloodDonation(),
+                (e.getPerson() != null) ? e.getPerson().getId() : "-",
+                (e.getBloodDonation() != null) ? e.getBloodDonation().getId() : "-",
                 e.getTested(),
                 e.getAdministrator(),
                 e.getHospital(),
