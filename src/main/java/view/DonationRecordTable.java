@@ -1,6 +1,8 @@
 package view;
 
 
+import dal.BloodDonationDAL;
+import dal.DonationRecordDAL;
 import entity.DonationRecord;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,8 +1,10 @@
 package logic;
 
 import common.ValidationException;
+import dal.AccountDAL;
 import dal.BloodDonationDAL;
 import dal.DonationRecordDAL;
+import entity.Account;
 import entity.BloodDonation;
 import entity.DonationRecord;
 import entity.Person;
@@ -113,11 +115,12 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
 
         //set values on entity
         entity.setAdministrator(admin);
-        BloodDonationDAL donationRd = new BloodDonationDAL();
-//        entity.setBloodDonation(donationRd.findById(Integer.parseInt(donationId)));
-BloodDonation yy = new BloodDonation();
-yy.setId(1);
-        entity.setBloodDonation(yy);
+
+//        entity.setBloodDonation(new BloodDonationDAL().findById(Integer.parseInt(donationId)));
+        BloodDonation b = new BloodDonation();
+        b.setId(2);
+        entity.setBloodDonation(b);     //Temp
+
         Date dateCreated = null;
         try {
             dateCreated = new SimpleDateFormat("yyyy-MM-dd").parse(created);
@@ -128,12 +131,13 @@ yy.setId(1);
         entity.setCreated(dateCreated);
         entity.setHospital(hospital);
 
-//        PersonDAL person = new PersonDAL(); //Jack needs to implement people first
-//        entity.setPerson(person.findById(Integer.parseInt(personId)));
-        entity.setPerson(new Person());     //Temp
+//        entity.setPerson(new PersonDAL().findById(Integer.parseInt(personId)));//Jack needs to implement people first
+        Person p = new Person();
+        p.setId(1);
+        entity.setPerson(p);     //Temp
 
         entity.setTested(Boolean.parseBoolean(tested));
-
+ 
         return entity;
     }
 

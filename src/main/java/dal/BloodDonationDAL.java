@@ -25,7 +25,7 @@ public class BloodDonationDAL extends GenericDAL<BloodDonation>{
     public BloodDonation findById(int donationId) {
         Map<String, Object> map = new HashMap<>();
         map.put( "donationId", donationId);
-        return findResult("BloodDonation.findById", map);
+        return findResult("BloodDonation.findByDonationId", map);
     }
     
     public List<BloodDonation> findByMilliliters(int milliliters) {
