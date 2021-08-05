@@ -19,12 +19,12 @@ import java.util.function.ObjIntConsumer;
  */
 public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonationDAL>{
 
-    public String BANK_ID = "bank_id";
-    public String MILLILITERS = "milliliters";
-    public String BLOOD_GROUP = "blood_group";
-    public String RHESUS_FACTOR = "rhesus_factor";
-    public String CREATED = "created";
-    public String ID = "id";
+    public static String BANK_ID = "bank_id";
+    public static String MILLILITERS = "milliliters";
+    public static String BLOOD_GROUP = "blood_group";
+    public static String RHESUS_FACTOR = "rhesus_factor";
+    public static String CREATED = "created";
+    public static String ID = "id";
     
     public BloodDonationLogic() {
         super(new BloodDonationDAL());
@@ -99,7 +99,12 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
         validator.accept(milliliters, 45);
         validator.accept(rhesusFactor, 45);
 
-        entity.setId(Integer.parseInt(bankId));
+        //entity.setBloodDonation(donationRd.findById(Integer.parseInt(donationId)));
+        //entity.setId(Integer.parseInt(bankId));
+        //entity.setId(BloodBankDAL.findById(Integer.parseInt(bankId)));
+        BloodBankDAL bloodBankDAL = new BloodBankDAL();
+        entity.setId(bloodBankDAL.findById(Integer.parseInt(bankId)));
+        
         entity.setBloodGroup(BloodGroup.valueOf(bloodGroup));
         entity.setCreated(convertStringToDate(created));
         entity.setMilliliters(Integer.getInteger(milliliters));
