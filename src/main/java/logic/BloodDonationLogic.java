@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.ObjIntConsumer;
 
+
+//temp
+import entity.BloodBank;
 /**
  *
  * @author ryanh
@@ -102,9 +105,15 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
         //entity.setBloodDonation(donationRd.findById(Integer.parseInt(donationId)));
         //entity.setId(Integer.parseInt(bankId));
         //entity.setId(BloodBankDAL.findById(Integer.parseInt(bankId)));
-        BloodBankDAL bloodBankDAL = new BloodBankDAL();
-        entity.setId(bloodBankDAL.findById(Integer.parseInt(bankId)));
         
+        //Correct code
+//        BloodBankDAL bloodBankDAL = new BloodBankDAL();
+//        entity.setId(bloodBankDAL.findById(Integer.parseInt(bankId)));
+        
+        //Temp, to be removed
+        BloodBank bloodBank = new BloodBank();
+        entity.setId(Integer.parseInt(bloodBank.toString()));
+
         entity.setBloodGroup(BloodGroup.valueOf(bloodGroup));
         entity.setCreated(convertStringToDate(created));
         entity.setMilliliters(Integer.getInteger(milliliters));
