@@ -112,7 +112,8 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
         
         //Temp, to be removed
         BloodBank bloodBank = new BloodBank();
-        entity.setId(Integer.parseInt(bloodBank.toString()));
+        bloodBank.setId(Integer.parseInt(bankId));
+        entity.setBloodBank(bloodBank);
 
         entity.setBloodGroup(BloodGroup.valueOf(bloodGroup));
         entity.setCreated(convertStringToDate(created));

@@ -116,10 +116,10 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         //set values on entity
         entity.setAdministrator(admin);
 
-//        entity.setBloodDonation(new BloodDonationDAL().findById(Integer.parseInt(donationId)));
-        BloodDonation b = new BloodDonation();
-        b.setId(2);
-        entity.setBloodDonation(b);     //Temp
+        entity.setBloodDonation(new BloodDonationDAL().findById(Integer.parseInt(donationId)));
+//        BloodDonation b = new BloodDonation();
+//        b.setId(2);
+//        entity.setBloodDonation(b);     //Temp
 
         Date dateCreated = null;
         try {
