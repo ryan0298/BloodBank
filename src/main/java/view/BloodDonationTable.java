@@ -104,7 +104,7 @@ public class BloodDonationTable extends HttpServlet {
             throws ServletException, IOException {
         log( "POST" );
         BloodDonationLogic logic = LogicFactory.getFor( "BloodDonation" );
-        BloodDonation bloodDonation = logic.createEntity( request.getParameterMap() );
+        BloodDonation bloodDonation = logic.updateEntity( request.getParameterMap() );
         logic.update( bloodDonation );
         processRequest( request, response );
     }
@@ -116,7 +116,7 @@ public class BloodDonationTable extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Sample of BloodDonation View Normal";
+        return "Blood Donation Table View Normal";
     }
 
     private static final boolean DEBUG = true;

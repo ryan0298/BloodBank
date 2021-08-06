@@ -1,5 +1,8 @@
 package logic;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class LogicFactory {
 
     private static final String PACKAGE = "logic.";
@@ -8,22 +11,22 @@ public abstract class LogicFactory {
     private LogicFactory() {
     }
 
-    //TODO this code is not complete, it is just here for sake of programe working. need to be changed ocmpletely
-    public static < T> T getFor( String entityName ) {
-        //this casting wont be needed.
-        
-        // THIS IS TEMPORARLY 
-        // JUST FOR THE SAKE OF TESTING
-        switch (entityName){// THIS IS TEMPORARLY 
-            case "Account":// THIS IS TEMPORARLY 
-                return (T)new AccountLogic();// THIS IS TEMPORARLY 
-            case "DonationRecord":// THIS IS TEMPORARLY 
-                return (T)new DonationRecordLogic();// THIS IS TEMPORARLY
-            case "BloodDonation":
-                return (T)new BloodDonationLogic();
-            default:// THIS IS TEMPORARLY 
-                return (T)new AccountLogic();// THIS IS TEMPORARLY 
-        }// THIS IS TEMPORARLY 
+    public static < T> T getFor(String entityName) {
+        try {
+            return getFor((Class< T>) Class.forName(PACKAGE + entityName + SUFFIX));
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
 
+    public static < T> T getFor(Class<T> type) {
+        try {
+            Constructor<T> declaredConstructor = type.getDeclaredConstructor();
+            return declaredConstructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            return null;
+
+        }
     }
 }
