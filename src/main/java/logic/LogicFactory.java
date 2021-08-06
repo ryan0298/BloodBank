@@ -19,6 +19,8 @@ public abstract class LogicFactory {
                 return (T)new AccountLogic();// THIS IS TEMPORARLY 
             case "DonationRecord":// THIS IS TEMPORARLY 
                 return (T)new DonationRecordLogic();// THIS IS TEMPORARLY
+            case "BloodDonation":
+                return (T)new BloodDonationLogic();
             default:// THIS IS TEMPORARLY 
                 return (T)new AccountLogic();// THIS IS TEMPORARLY 
         }// THIS IS TEMPORARLY 
