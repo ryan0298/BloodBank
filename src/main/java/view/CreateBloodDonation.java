@@ -51,7 +51,7 @@ public class CreateBloodDonation extends HttpServlet {
             //instead of typing the name of column manualy use the static vraiable in logic
             //use the same name as column id of the table. will use this name to get date
             //from parameter map.
-            out.printf( "<input type=\"text\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.BANK_ID );
+            out.printf( "<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.BANK_ID );
             out.println( "<br>" );
             
             out.println( "Blood Group:<br>" );
@@ -80,15 +80,15 @@ public class CreateBloodDonation extends HttpServlet {
             out.println( "<br>" );
             
             out.println( "Created:<br>" );
-            out.printf( "<input type=\"date\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.CREATED );
+            out.printf( "<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\"  name=\"%s\" value=\"\"><br>", BloodDonationLogic.CREATED );
             out.println( "<br>" );
             
             out.println( "ID:<br>" );
-            out.printf( "<input type=\"text\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.ID );
+            out.printf( "<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.ID );
             out.println( "<br>" );
             
             out.println( "Milliliters:<br>" );
-            out.printf( "<input type=\"text\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.MILLILITERS );
+            out.printf( "<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.MILLILITERS );
             out.println( "<br>" );
             
             out.println( "Rhesus Factor:<br>" );

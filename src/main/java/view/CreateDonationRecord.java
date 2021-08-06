@@ -136,6 +136,9 @@ public class CreateDonationRecord extends HttpServlet {
         DonationRecordLogic drLogic = LogicFactory.getFor("DonationRecord");
             try {
                 DonationRecord donationRecord = drLogic.createEntity(request.getParameterMap());
+                //create logic for blooddonation logic
+                //using th elogic, call method getwith id and pass to it the id of the blooddonation
+                //using the setter of donation record add the depdendency
                 drLogic.add(donationRecord);
             } catch (Exception ex) {
                 errorMessage = ex.getMessage();
