@@ -114,9 +114,6 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         entity.setAdministrator(admin);
 
         entity.setBloodDonation(new BloodDonationLogic().getWithId(Integer.parseInt(donationId)));
-//        BloodDonation b = new BloodDonation();
-//        b.setId(2);
-//        entity.setBloodDonation(b);     //Temp
 
         Date dateCreated = null;
         try {
@@ -128,10 +125,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         entity.setCreated(dateCreated);
         entity.setHospital(hospital);
 
-//        entity.setPerson(new PersonDAL().findById(Integer.parseInt(personId)));//Jack needs to implement people first
-//        Person p = new Person();
-//        p.setId(1);
-//        entity.setPerson(p);     //Temp
+//        entity.setPerson(new PersonLogic().getWithId(Integer.parseInt(personId)));//Jack needs to implement people first
 
         entity.setTested(Boolean.parseBoolean(tested));
  
