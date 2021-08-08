@@ -106,9 +106,6 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         String created = parameterMap.get(CREATED)[0];
 
         //validate the data
-//        validator.accept(personId, 10);
-//        validator.accept(donationId, 10);
-//        validator.accept(tested, 6);
         validator.accept(admin, 45);
         validator.accept(hospital, 65);
 //        validator.accept(created, 45);
@@ -116,7 +113,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         //set values on entity
         entity.setAdministrator(admin);
 
-//        entity.setBloodDonation(new BloodDonationDAL().findById(Integer.parseInt(donationId)));
+        entity.setBloodDonation(new BloodDonationLogic().getWithId(Integer.parseInt(donationId)));
 //        BloodDonation b = new BloodDonation();
 //        b.setId(2);
 //        entity.setBloodDonation(b);     //Temp
