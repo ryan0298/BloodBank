@@ -112,8 +112,8 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
 
         //set values on entity
         entity.setAdministrator(admin);
-
-        entity.setBloodDonation(new BloodDonationLogic().getWithId(Integer.parseInt(donationId)));
+        BloodDonationLogic bloodDonationLogic = LogicFactory.getFor( "BloodDonation" );
+        entity.setBloodDonation(bloodDonationLogic.getWithId(Integer.parseInt(donationId)));
 
         Date dateCreated = null;
         try {
@@ -125,8 +125,8 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         entity.setCreated(dateCreated);
         entity.setHospital(hospital);
 
-//        entity.setPerson(new PersonLogic().getWithId(Integer.parseInt(personId)));//Jack needs to implement people first
-
+        PersonLogic personLogic = LogicFactory.getFor( "Person" );
+        entity.setPerson(personLogic.getWithId(Integer.parseInt(donationId)));
         entity.setTested(Boolean.parseBoolean(tested));
  
         return entity;

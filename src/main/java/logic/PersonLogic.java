@@ -125,7 +125,7 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
             try {
                 String bloodbankId = parameterMap.get(BLOODBANK_ID)[0];
                 validator.accept(bloodbankId, 10);
-                entity.setBloodBank(new BloodBankDAL().findById(Integer.parseInt(bloodbankId)));
+//                entity.setBloodBank(new BloodBankDAL().findById(Integer.parseInt(bloodbankId)));
             } catch(java.lang.NumberFormatException ex) {
                 throw new ValidationException(ex);
             }
