@@ -90,13 +90,14 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
             }
         };
 
-        String bankId = paremeterMap.get(BANK_ID)[0];
+        //String bankId = paremeterMap.get(BANK_ID)[0];
         String bloodGroup = paremeterMap.get(BLOOD_GROUP)[0];
-        String created = paremeterMap.get(CREATED)[0];
+        String created = paremeterMap.get(CREATED)[0];//Initial date with the T placeholder
+        String newCreatedRemovedT = created.replace("T", " ");//Updated created without the T placeholder
         String milliliters = paremeterMap.get(MILLILITERS)[0];
         String rhesusFactor = paremeterMap.get(RHESUS_FACTOR)[0];
 
-        validator.accept(bankId, 45);
+        //validator.accept(bankId, 45);
         validator.accept(bloodGroup, 45);
         validator.accept(created, 45);
         validator.accept(milliliters, 45);
@@ -111,12 +112,12 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
 //        entity.setId(bloodBankDAL.findById(Integer.parseInt(bankId)));
         
         //Temp, to be removed
-        BloodBank bloodBank = new BloodBank();
-        bloodBank.setId(Integer.parseInt(bankId));
-        entity.setBloodBank(bloodBank);
+        //BloodBank bloodBank = new BloodBank();
+        //bloodBank.setId(Integer.parseInt(bankId));
+        //entity.setBloodBank(bloodBank);
 
         entity.setBloodGroup(BloodGroup.valueOf(bloodGroup));
-        entity.setCreated(convertStringToDate(created));
+        entity.setCreated(convertStringToDate(newCreatedRemovedT));
         entity.setMilliliters(Integer.getInteger(milliliters));
         entity.setRhd(RhesusFactor.valueOf(rhesusFactor));
 

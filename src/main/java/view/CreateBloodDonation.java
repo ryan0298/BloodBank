@@ -80,7 +80,7 @@ public class CreateBloodDonation extends HttpServlet {
             out.println( "<br>" );
             
             out.println( "Created:<br>" );
-            out.printf( "<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\"  name=\"%s\" value=\"\"><br>", BloodDonationLogic.CREATED );
+            out.printf( "<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.CREATED );
             out.println( "<br>" );
             
             out.println( "ID:<br>" );
@@ -165,6 +165,10 @@ public class CreateBloodDonation extends HttpServlet {
         
             try {
                 BloodDonation bloodDonation = bloodDonationLogic.createEntity( request.getParameterMap() );
+                
+                bloodDonationLogic.getWithId(bloodDonation.getId());//temp need fix
+                bloodDonation.setBloodBank(bloodDonation.getBloodBank());//temp need fix
+                
                 bloodDonationLogic.add( bloodDonation );
             } catch( Exception ex ) {
                 errorMessage = ex.getMessage();
