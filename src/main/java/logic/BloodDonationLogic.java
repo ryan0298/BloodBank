@@ -117,7 +117,13 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
         //entity.setBloodBank(bloodBank);
 
         entity.setBloodGroup(BloodGroup.valueOf(bloodGroup));
-        entity.setCreated(convertStringToDate(newCreatedRemovedT));
+        
+        try {
+            entity.setCreated(convertStringToDate(newCreatedRemovedT));
+        }catch (ValidationException e) {
+            entity.setCreated(new Date());
+        }
+        
         entity.setMilliliters(Integer.getInteger(milliliters));
         entity.setRhd(RhesusFactor.valueOf(rhesusFactor));
 
