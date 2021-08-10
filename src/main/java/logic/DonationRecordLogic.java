@@ -106,27 +106,28 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         String created = parameterMap.get(CREATED)[0];
 
         //validate the data
+        validator.accept(personId, 5);
+        validator.accept(donationId, 5);
         validator.accept(admin, 45);
         validator.accept(hospital, 65);
-//        validator.accept(created, 45);
+        validator.accept(created, 45);
+validator.accept(tested, 5);
 
         //set values on entity
         entity.setAdministrator(admin);
         BloodDonationLogic bloodDonationLogic = LogicFactory.getFor( "BloodDonation" );
         entity.setBloodDonation(bloodDonationLogic.getWithId(Integer.parseInt(donationId)));
 
-        Date dateCreated = null;
         try {
-            dateCreated = new SimpleDateFormat("yyyy-MM-dd").parse(created);
-        } catch (ParseException ex) {
-            Logger.getLogger(DonationRecordLogic.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ValidationException("failed to format String=\"" + created + "\" to a date object" + dateCreated, ex);
+            entity.setCreated(convertStringToDate(created));
+        } catch (ValidationException ex) {
+            entity.setCreated(new Date());
         }
-        entity.setCreated(dateCreated);
         entity.setHospital(hospital);
 
         PersonLogic personLogic = LogicFactory.getFor( "Person" );
-        entity.setPerson(personLogic.getWithId(Integer.parseInt(donationId)));
+        Person cc = personLogic.getWithId(Integer.parseInt(donationId));
+        entity.setPerson(cc);
         entity.setTested(Boolean.parseBoolean(tested));
  
         return entity;
@@ -146,9 +147,9 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
     public List<?> extractDataAsList(DonationRecord e) {
         return Arrays.asList(
                 e.getId(),
-                (e.getPerson() != null) ? e.getPerson().getId() : "-",
-                (e.getBloodDonation() != null) ? e.getBloodDonation().getId() : "-",
-                (e.getTested()) ? "Yes" : "No",
+                e.getPerson(),
+                e.getBloodDonation(),
+                e.getTested(),
                 e.getAdministrator(),
                 e.getHospital(),
                 e.getCreated());

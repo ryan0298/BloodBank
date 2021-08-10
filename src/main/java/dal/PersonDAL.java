@@ -23,8 +23,8 @@ public class PersonDAL extends GenericDAL<Person> {
     @Override
     public Person findById(int personId) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "personId", personId);
-        return findResult("Person.findByPersonId", map);
+        map.put( "id", personId);
+        return findResult("Person.findById", map);
     }
     
     public List<Person> findByFirstName(String firstName) {
