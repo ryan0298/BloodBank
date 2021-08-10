@@ -29,31 +29,31 @@ public class PersonDAL extends GenericDAL<Person> {
     
     public List<Person> findByFirstName(String firstName) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "personFirstName", firstName);
+        map.put( "firstName", firstName);
         return findResults("Person.findByFirstName", map);
     }
     
     public List<Person> findByLastName(String lastName) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "personLastName", lastName);
+        map.put( "lastName", lastName);
         return findResults("Person.findByLastName", map);
     }
     
     public List<Person> findByPhone(String phone) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "personPhone", phone);
+        map.put( "phone", phone);
         return findResults("Person.findByPhone", map);
     }
     
     public List<Person> findByAddress(String address) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "personAddress", address);
+        map.put( "address", address);
         return findResults("Person.findByAddress", map);
     }
     
     public List<Person> findByBirth(Date birth) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "personBirth", birth);
+        map.put( "birth", birth);
         return findResults("Person.findByBirth", map);
     }
 }
