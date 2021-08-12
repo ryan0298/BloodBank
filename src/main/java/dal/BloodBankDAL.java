@@ -1,56 +1,68 @@
-
 package dal;
+
+import entity.BloodBank;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
- * @author William
+ * @author ryanh
  */
-public class BloodBankDAL extents GenericDAL<BloodBank> {
-       
- public BloodDonationDAL() {
-        super(BloodDonation.class);
-    }
-    public List<BloodBank> findAll(){
-         return findResults("BloodBank.findAll", null);
+public class BloodBankDAL extends GenericDAL<BloodBank>{
+    
+    public BloodBankDAL() {
+        super(BloodBank.class);
     }
     
-    public BloodDonation findByID(int bankId){
+    @Override
+    public List<BloodBank> findAll() {
+        return findResults( "BloodBank.findAll", null );
+    }
+    
+    @Override
+    public BloodBank findById(int bankId) {
         Map<String, Object> map = new HashMap<>();
         map.put( "bankId", bankId);
         return findResult("BloodBank.findByBankId", map);
     }
-
-    public BloodBank findByName(String name){
+    
+    public BloodBank findByName(String name) {
         Map<String, Object> map = new HashMap<>();
         map.put( "name", name);
         return findResult("BloodBank.findByName", map);
     }
-
-    public List<BloodBank> findByPrivatelyOwned(boolean privatelyOwned){
-    Map<String, Object> map = new HashMap<>();
+    
+    public List<BloodBank> findByPreviouslyOwned(boolean privatelyOwned) {
+        Map<String, Object> map = new HashMap<>();
         map.put( "privatelyOwned", privatelyOwned);
-        return findResult("BloodBank.findByPrivatelyOwned", map);
+        return findResults("BloodBank.findByPrivatelyOwned", map);
     }
     
-    public List<BloodBank> findByEstabilished(Date established){
+    public List<BloodBank> findByEstablished(Date established) {
         Map<String, Object> map = new HashMap<>();
         map.put( "established", established);
-        return findResult("BloodBank.findByEstabilished", map);
+        return findResults("BloodBank.findByEstablished", map);
     }
-
-    public List<BloodBank> findByEmployeeCount(int employeeCount){
+    
+    public List<BloodBank> findByEmployeeCount(int emplyeeCount) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "emplyeeCount", employeeCount);
-        return findResult("BloodBank.findByEmplyeeCount", map);
+        map.put( "emplyeeCount", emplyeeCount);
+        return findResults("BloodBank.findByEmplyeeCount", map);
     }
-    public BloodBank findByOwner(int OwnerId){
+    
+    public BloodBank findByOwner(int ownerId) {
         Map<String, Object> map = new HashMap<>();
-        map.put( "ownerId", OwnerId);
+        map.put( "ownerId", ownerId);
         return findResult("BloodBank.findByOwner", map);
     }
-    public List<BloodBank> findContaining(String search){
+    
+    public List<BloodBank> findContaining(String search) {//Query might be missing in BloodBank class
         Map<String, Object> map = new HashMap<>();
-        map.put( "search", search );
-        return findResults( "BloodBank.findContaining", map );
+        map.put( "search", search);
+        return findResults("BloodBank.findByContaining", map);
     }
+    
+    
 }
