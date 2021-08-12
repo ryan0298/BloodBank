@@ -98,11 +98,11 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
         String milliliters = paremeterMap.get(MILLILITERS)[0];
         String rhesusFactor = paremeterMap.get(RHESUS_FACTOR)[0];
 
-        validator.accept(bankId, 45);
-        validator.accept(bloodGroup, 45);
-        validator.accept(created, 45);
-        validator.accept(milliliters, 45);
-        validator.accept(rhesusFactor, 45);
+//        validator.accept(bankId, 45);
+//        validator.accept(bloodGroup, 45);
+//        validator.accept(created, 45);
+//        validator.accept(milliliters, 45);
+//        validator.accept(rhesusFactor, 45);
 
         //entity.setBloodDonation(donationRd.findById(Integer.parseInt(donationId)));
         //entity.setId(Integer.parseInt(bankId));
@@ -116,11 +116,11 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
         //BloodBank bloodBank = new BloodBank();
         //bloodBank.setId(Integer.parseInt(bankId));
         //entity.setBloodBank(bloodBank);
-        BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
-        entity.setBloodBank(bloodBankLogic.getWithId(Integer.parseInt(bankId)));
-        
-        DonationRecordLogic bloodRecordLogic = LogicFactory.getFor( "DonationRecord" );
-        entity.setDonationRecordSet(Set.copyOf(bloodRecordLogic.getDonationRecordsWithDonation(Integer.parseInt(paremeterMap.get(ID)[0]))));
+//        BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
+//        entity.setBloodBank(bloodBankLogic.getWithId(Integer.parseInt(bankId)));
+//        
+//        DonationRecordLogic bloodRecordLogic = LogicFactory.getFor( "DonationRecord" );
+//        entity.setDonationRecordSet(Set.copyOf(bloodRecordLogic.getDonationRecordsWithDonation(Integer.parseInt(paremeterMap.get(ID)[0]))));
         
         entity.setBloodGroup(BloodGroup.valueOf(bloodGroup));
         

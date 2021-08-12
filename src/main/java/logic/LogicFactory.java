@@ -15,7 +15,7 @@ public abstract class LogicFactory {
         try {
             return getFor((Class< T>) Class.forName(PACKAGE + entityName + SUFFIX));
         } catch (ClassNotFoundException e) {
-            return null;
+            throw new IllegalStateException(e);
         }
     }
 
@@ -25,7 +25,7 @@ public abstract class LogicFactory {
             return declaredConstructor.newInstance();
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-            return null;
+            throw new IllegalStateException(e);
 
         }
     }
