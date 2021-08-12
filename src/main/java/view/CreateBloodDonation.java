@@ -166,8 +166,8 @@ public class CreateBloodDonation extends HttpServlet {
             try {
                 BloodDonation bloodDonation = bloodDonationLogic.createEntity( request.getParameterMap() );
                 
-                bloodDonationLogic.getWithId(bloodDonation.getId());//temp need fix
-                bloodDonation.setBloodBank(bloodDonation.getBloodBank());//temp need fix
+//                bloodDonationLogic.getWithId(bloodDonation.getId());//temp need fix
+//                bloodDonation.setBloodBank(bloodDonation.getBloodBank());//temp need fix
                 
                 bloodDonationLogic.add( bloodDonation );
             } catch( Exception ex ) {

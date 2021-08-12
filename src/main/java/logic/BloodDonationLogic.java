@@ -16,6 +16,7 @@ import java.util.function.ObjIntConsumer;
 
 //temp
 import entity.BloodBank;
+import java.util.Set;
 /**
  *
  * @author ryanh
@@ -90,14 +91,14 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
             }
         };
 
-        //String bankId = paremeterMap.get(BANK_ID)[0];
+        String bankId = paremeterMap.get(BANK_ID)[0];
         String bloodGroup = paremeterMap.get(BLOOD_GROUP)[0];
         String created = paremeterMap.get(CREATED)[0];//Initial date with the T placeholder
         String newCreatedRemovedT = created.replace("T", " ");//Updated created without the T placeholder
         String milliliters = paremeterMap.get(MILLILITERS)[0];
         String rhesusFactor = paremeterMap.get(RHESUS_FACTOR)[0];
 
-        //validator.accept(bankId, 45);
+        validator.accept(bankId, 45);
         validator.accept(bloodGroup, 45);
         validator.accept(created, 45);
         validator.accept(milliliters, 45);
@@ -115,7 +116,12 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
         //BloodBank bloodBank = new BloodBank();
         //bloodBank.setId(Integer.parseInt(bankId));
         //entity.setBloodBank(bloodBank);
-
+        BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
+        entity.setBloodBank(bloodBankLogic.getWithId(Integer.parseInt(bankId)));
+        
+        DonationRecordLogic bloodRecordLogic = LogicFactory.getFor( "DonationRecord" );
+        entity.setDonationRecordSet(Set.copyOf(bloodRecordLogic.getDonationRecordsWithDonation(Integer.parseInt(paremeterMap.get(ID)[0]))));
+        
         entity.setBloodGroup(BloodGroup.valueOf(bloodGroup));
         
         try {
@@ -124,8 +130,8 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
             entity.setCreated(new Date());
         }
         
-        entity.setMilliliters(Integer.getInteger(milliliters));
-        entity.setRhd(RhesusFactor.valueOf(rhesusFactor));
+        entity.setMilliliters(Integer.parseInt(milliliters));
+        entity.setRhd(RhesusFactor.getRhesusFactor(rhesusFactor));
 
         return entity;
 

@@ -104,14 +104,14 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         String admin = parameterMap.get(ADMINISTRATOR)[0];
         String hospital = parameterMap.get(HOSPITAL)[0];
         String created = parameterMap.get(CREATED)[0];
-
+        created = created.replace("T", " "); //From Ryan's code
         //validate the data
         validator.accept(personId, 5);
         validator.accept(donationId, 5);
         validator.accept(admin, 45);
         validator.accept(hospital, 65);
         validator.accept(created, 45);
-validator.accept(tested, 5);
+        validator.accept(tested, 5);
 
         //set values on entity
         entity.setAdministrator(admin);
