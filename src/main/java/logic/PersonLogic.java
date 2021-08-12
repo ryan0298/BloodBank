@@ -146,7 +146,7 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
     
     @Override
     public List<String> getColumnNames() {
-        return Arrays.asList("ID", "First Name", "Last Name", "Phone Number", "Address", "Date of Birth");
+        return Arrays.asList("ID", "First Name", "Last Name", "Phone Number", "Address", "Date of Birth", "Blood Bank ID","Donation Record IDs");
     }
 
     @Override
