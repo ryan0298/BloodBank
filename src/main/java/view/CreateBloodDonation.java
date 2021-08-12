@@ -1,6 +1,7 @@
 package view;
 
 import entity.Account;
+import entity.BloodBank;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import logic.AccountLogic;
 import logic.LogicFactory;
 import logic.BloodDonationLogic;
 import entity.BloodDonation;
+import logic.BloodBankLogic;
 
 /**
  *
@@ -161,12 +163,12 @@ public class CreateBloodDonation extends HttpServlet {
         log("POST");
 
         BloodDonationLogic bloodDonationLogic = LogicFactory.getFor("BloodDonation");
-
+        BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
         try {
             BloodDonation bloodDonation = bloodDonationLogic.createEntity(request.getParameterMap());
+             BloodBank bloodBank = bloodBankLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodDonationLogic.BANK_ID)[0]));             
+             bloodDonation.setBloodBank(bloodBank);
 
-//                bloodDonationLogic.getWithId(bloodDonation.gebloodDonationtId());//temp need fix
-//                bloodDonation.setBloodBank(bloodDonation.getBloodBank());//temp need fix
             bloodDonationLogic.add(bloodDonation);
         } catch (Exception ex) {
             errorMessage = ex.getMessage();
