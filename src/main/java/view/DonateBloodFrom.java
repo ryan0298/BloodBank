@@ -1,6 +1,9 @@
 package view;
 
 import entity.Account;
+import entity.BloodDonation;
+import entity.DonationRecord;
+import entity.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -189,25 +192,24 @@ public class DonateBloodFrom extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         log("POST");
-        AccountLogic aLogic = LogicFactory.getFor("Account");
-        String username = request.getParameter(AccountLogic.USERNAME);
-        if (aLogic.getAccountWithUsername(username) == null) {
+        PersonLogic personLogic = LogicFactory.getFor( "Person" );
+        BloodDonationLogic bloodDonationLogic = LogicFactory.getFor( "BloodDonation" );
+        DonationRecordLogic drLogic = LogicFactory.getFor("DonationRecord");
+        
             try {
-                Account account = aLogic.createEntity(request.getParameterMap());
-                aLogic.add(account);
+                Person person = personLogic.createEntity( request.getParameterMap() );
+//                personLogic.add( person );
+                BloodDonation bloodDonation = bloodDonationLogic.createEntity( request.getParameterMap() );
+//                bloodDonationLogic.add( bloodDonation );
+                DonationRecord donationRecord = drLogic.createEntity(request.getParameterMap());
+//                drLogic.add(donationRecord);
+                System.out.println("");
             } catch (Exception ex) {
                 errorMessage = ex.getMessage();
             }
-        } else {
-            //if duplicate print the error message
-            errorMessage = "Username: \"" + username + "\" already exists";
-        }
+            
         if (request.getParameter("add") != null) {
-            //if add button is pressed return the same page
             processRequest(request, response);
-        } else if (request.getParameter("view") != null) {
-            //if view button is pressed redirect to the appropriate table
-            response.sendRedirect("AccountTable");
         }
     }
 

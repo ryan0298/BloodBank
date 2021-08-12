@@ -120,14 +120,14 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
         }
         
         if(parameterMap.containsKey(BLOODBANK_ID)) {
-            try {
+//            try {
                 String bloodbankId = parameterMap.get(BLOODBANK_ID)[0];
                 validator.accept(bloodbankId, 10);
-//                BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
-//                entity.setBloodDonation(bloodBankLogic.getWithId(Integer.parseInt(bloodbankId)));
-            } catch(java.lang.NumberFormatException ex) {
-                throw new ValidationException(ex);
-            }
+                BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
+                entity.setBloodBank(bloodBankLogic.getWithId(Integer.parseInt(bloodbankId)));
+//            } catch(java.lang.NumberFormatException ex) {
+//                throw new ValidationException(ex);
+//            }
         }
         
         List<DonationRecord> donations;
