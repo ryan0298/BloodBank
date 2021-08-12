@@ -14,6 +14,7 @@ import logic.AccountLogic;
 import logic.LogicFactory;
 import entity.BloodDonation;
 import entity.Person;
+import logic.BloodBankLogic;
 import logic.PersonLogic;
 
 /**
@@ -141,6 +142,11 @@ public class CreatePerson extends HttpServlet {
         
             try {
                 Person person = personLogic.createEntity( request.getParameterMap() );
+               
+                BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
+                person.setBloodBank(bloodBankLogic.getWithId(Integer.parseInt(request.getParameterMap().get(PersonLogic.BLOODBANK_ID)[0])));
+               
+
                 personLogic.add( person );
             } catch( Exception ex ) {
                 errorMessage = ex.getMessage();
