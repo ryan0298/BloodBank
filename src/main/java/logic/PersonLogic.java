@@ -119,27 +119,27 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
             entity.setBirth(new Date());
         }
         
-        if(parameterMap.containsKey(BLOODBANK_ID)) {
+//        if(parameterMap.containsKey(BLOODBANK_ID)) {
 //            try {
                 String bloodbankId = parameterMap.get(BLOODBANK_ID)[0];
-                validator.accept(bloodbankId, 10);
-                BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
-                entity.setBloodBank(bloodBankLogic.getWithId(Integer.parseInt(bloodbankId)));
+//                validator.accept(bloodbankId, 10);c
+//                BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
+//                entity.setBloodBank(bloodBankLogic.getWithId(Integer.parseInt(bloodbankId)));
 //            } catch(java.lang.NumberFormatException ex) {
 //                throw new ValidationException(ex);
 //            }
-        }
+//        }
         
-        List<DonationRecord> donations;
-        if(entity.getId() != null) {
-            DonationRecordLogic donationRecordLogic = LogicFactory.getFor( "DonationRecord" );
-            donations = (ArrayList) donationRecordLogic.getDonationRecordsWithPerson(entity.getId());
-            
-            if(donations.size() > 0) {
-                Set<DonationRecord> donationSet = Set.copyOf(donations);
-                entity.setDonationRecordSet(donationSet);
-            }
-        }
+//        List<DonationRecord> donations;
+//        if(entity.getId() != null) {
+//            DonationRecordLogic donationRecordLogic = LogicFactory.getFor( "DonationRecord" );
+//            donations = (ArrayList) donationRecordLogic.getDonationRecordsWithPerson(entity.getId());
+//            
+//            if(donations.size() > 0) {
+//                Set<DonationRecord> donationSet = Set.copyOf(donations);
+//                entity.setDonationRecordSet(donationSet);
+//            }
+//        }
         
         return entity;
     }
