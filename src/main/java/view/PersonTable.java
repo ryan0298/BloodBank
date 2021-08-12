@@ -16,9 +16,13 @@ import logic.LogicFactory;
 
 /**
  *
- * @author Shariar (Shawn) Emami
+ * @author Jack Avery
  */
+<<<<<<< HEAD
 @WebServlet( name = "PersonTable", urlPatterns = { "/PersonTable" } )
+=======
+@WebServlet( name = "Person", urlPatterns = { "/PersonTable" } )
+>>>>>>> 16199725431e3dfe3cbeb300422cb4f62d19679a
 public class PersonTable extends HttpServlet {
 
     /**
