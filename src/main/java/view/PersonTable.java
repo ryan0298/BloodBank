@@ -17,6 +17,8 @@ import logic.LogicFactory;
 /**
  *
  * @author Jack Avery
+ * @author Ryanh
+ * @author Milad Mobini
  */
 @WebServlet( name = "Person", urlPatterns = { "/PersonTable" } )
 public class PersonTable extends HttpServlet {
@@ -49,7 +51,7 @@ public class PersonTable extends HttpServlet {
 
             out.println( "</tr>" );
 
-            logic.getAll().forEach( e -> out.printf( "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+            logic.getAll().forEach( e -> out.printf( "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
                     logic.extractDataAsList( e ).toArray() ) );
 
             out.println( "<tr>" );

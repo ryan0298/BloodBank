@@ -19,7 +19,7 @@ import entity.BloodBank;
 import java.util.Set;
 /**
  *
- * @author ryanh
+     * @author ryanh
  */
 public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonationDAL>{
 
