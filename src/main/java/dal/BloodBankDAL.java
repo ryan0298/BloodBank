@@ -58,11 +58,11 @@ public class BloodBankDAL extends GenericDAL<BloodBank>{
         return findResult("BloodBank.findByOwner", map);
     }
     
-    public List<BloodBank> findContaining(String search) {//Query might be missing in BloodBank class
-        Map<String, Object> map = new HashMap<>();
-        map.put( "search", search);
-        return findResults("BloodBank.findByContaining", map);
-    }
+//    public List<BloodBank> findContaining(String search) {//Query might be missing in BloodBank class
+//        Map<String, Object> map = new HashMap<>();
+//        map.put( "search", search);
+//        return findResults("BloodBank.findByContaining", map);
+//    }
     
     
 }

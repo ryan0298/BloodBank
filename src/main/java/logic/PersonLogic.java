@@ -32,7 +32,7 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
     public static final String ADDRESS = "address";
     public static final String BIRTH = "birth";
     public static final String BLOODBANK_ID = "bloodbank_id";
-    public static final String ID = "id";
+    public static final String ID = "person_id";
     
     PersonLogic() {
         super(new PersonDAL());
@@ -100,6 +100,7 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
         String phone = parameterMap.get(PHONE)[0];
         String address = parameterMap.get(ADDRESS)[0];
         String birth = parameterMap.get(BIRTH)[0];
+        birth = birth.replace("T", " "); //From Ryan's code
         
         validator.accept(firstName, 50);
         validator.accept(lastName, 50);
@@ -112,14 +113,11 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
         entity.setPhone(phone);
         entity.setAddress(address);
         
-        Date dateCreated = null;
         try {
-            dateCreated = new SimpleDateFormat("yyyy-MM-dd").parse(birth);
-        } catch (ParseException ex) {
-            Logger.getLogger(PersonLogic.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ValidationException("failed to format String=\"" + birth + "\" to a date object" + dateCreated, ex);
+            entity.setBirth(convertStringToDate(birth));
+        } catch (ValidationException ex) {
+            entity.setBirth(new Date());
         }
-        entity.setBirth(dateCreated);
         
         if(parameterMap.containsKey(BLOODBANK_ID)) {
             try {

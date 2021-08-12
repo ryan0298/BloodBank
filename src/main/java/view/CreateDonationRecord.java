@@ -65,7 +65,7 @@ public class CreateDonationRecord extends HttpServlet {
             out.printf("<input type=\"text\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.HOSPITAL);
             out.println("<br>");
             out.println("Created:<br>");
-            out.printf("<input type=\"date\" name=\"%s\" min=\"1900-01-01\" max=\"2022-1-1\"><br><br>", DonationRecordLogic.CREATED);
+            out.printf( "<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.CREATED );
             out.println("<br>");
             out.println("<input type=\"submit\" name=\"view\" value=\"Add and View\">");
             out.println("<input type=\"submit\" name=\"add\" value=\"Add\">");

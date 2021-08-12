@@ -23,12 +23,12 @@ import java.util.Set;
  */
 public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonationDAL>{
 
-    public static String BANK_ID = "bank_id";
+    public static String BANK_ID = "bloodbank_id";
     public static String MILLILITERS = "milliliters";
     public static String BLOOD_GROUP = "blood_group";
     public static String RHESUS_FACTOR = "rhesus_factor";
     public static String CREATED = "created";
-    public static String ID = "id";
+    public static String ID = "donation_id";
     
     public BloodDonationLogic() {
         super(new BloodDonationDAL());

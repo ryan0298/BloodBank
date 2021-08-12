@@ -31,7 +31,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
     public static final String ADMINISTRATOR = "administrator";
     public static final String HOSPITAL = "hospital";
     public static final String CREATED = "created";
-    public static final String ID = "id";
+    public static final String ID = "record_id";
 
     DonationRecordLogic() {
         super(new DonationRecordDAL());
