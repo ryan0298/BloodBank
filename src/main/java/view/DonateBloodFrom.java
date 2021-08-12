@@ -1,6 +1,7 @@
 package view;
 
 import entity.Account;
+import entity.BloodBank;
 import entity.BloodDonation;
 import entity.DonationRecord;
 import entity.Person;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.AccountLogic;
+import logic.BloodBankLogic;
 import logic.BloodDonationLogic;
 import logic.DonationRecordLogic;
 import logic.LogicFactory;
@@ -57,11 +59,7 @@ public class DonateBloodFrom extends HttpServlet {
             out.println( "Birth Date:<br>" );
             out.printf( "<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", PersonLogic.BIRTH );
             out.println( "<br>" );
-            
-            out.println( "ID:<br>" );
-            out.printf( "<input type=\"number\" name=\"%s\" value=\"\"><br>", PersonLogic.ID );
-            out.println( "<br>" );
-            
+
             out.println( "First Name:<br>" );
             out.printf( "<input type=\"text\" name=\"%s\" value=\"\"><br>", PersonLogic.FIRST_NAME );
             out.println( "<br>" );
@@ -93,9 +91,6 @@ public class DonateBloodFrom extends HttpServlet {
                     + "    <option value=\"AB\">AB</option>\n"
                     + "    <option value=\"O\">O</option>\n"
                     + "  </select>", BloodDonationLogic.BLOOD_GROUP, BloodDonationLogic.BLOOD_GROUP);
-            out.println("<br>");
-            out.println("ID:<br>");
-            out.printf("<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.ID);
             out.println("<br>");
             out.println("Milliliters:<br>");
             out.printf("<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.MILLILITERS);
@@ -195,15 +190,25 @@ public class DonateBloodFrom extends HttpServlet {
         PersonLogic personLogic = LogicFactory.getFor( "Person" );
         BloodDonationLogic bloodDonationLogic = LogicFactory.getFor( "BloodDonation" );
         DonationRecordLogic drLogic = LogicFactory.getFor("DonationRecord");
+        BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
         
             try {
+                BloodBank bloodBank = bloodBankLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodDonationLogic.BANK_ID)[0]));
+                
                 Person person = personLogic.createEntity( request.getParameterMap() );
-//                personLogic.add( person );
+                person.setBloodBank(bloodBank);
+                personLogic.add( person );
+
                 BloodDonation bloodDonation = bloodDonationLogic.createEntity( request.getParameterMap() );
-//                bloodDonationLogic.add( bloodDonation );
+                bloodDonation.setBloodBank(bloodBank);
+                bloodDonationLogic.add( bloodDonation );
+
+
                 DonationRecord donationRecord = drLogic.createEntity(request.getParameterMap());
-//                drLogic.add(donationRecord);
-                System.out.println("");
+                donationRecord.setBloodDonation(bloodDonation);
+                donationRecord.setPerson(person);
+                drLogic.add(donationRecord);
+
             } catch (Exception ex) {
                 errorMessage = ex.getMessage();
             }

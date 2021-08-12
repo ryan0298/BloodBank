@@ -56,10 +56,6 @@ public class CreatePerson extends HttpServlet {
             out.printf( "<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", PersonLogic.BIRTH );
             out.println( "<br>" );
             
-            out.println( "ID:<br>" );
-            out.printf( "<input type=\"number\" name=\"%s\" value=\"\"><br>", PersonLogic.ID );
-            out.println( "<br>" );
-            
             out.println( "First Name:<br>" );
             out.printf( "<input type=\"text\" name=\"%s\" value=\"\"><br>", PersonLogic.FIRST_NAME );
             out.println( "<br>" );

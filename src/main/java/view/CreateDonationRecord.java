@@ -145,6 +145,7 @@ public class CreateDonationRecord extends HttpServlet {
                 
                 PersonLogic personLogic = LogicFactory.getFor( "Person" );
                 donationRecord.setPerson(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(DonationRecordLogic.PERSON_ID)[0])));
+                
                 drLogic.add(donationRecord);
             } catch (Exception ex) {
                 errorMessage = ex.getMessage();
