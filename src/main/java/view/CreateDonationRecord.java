@@ -2,6 +2,7 @@ package view;
 
 
 import entity.DonationRecord;
+import entity.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -11,8 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logic.BloodDonationLogic;
 import logic.DonationRecordLogic;
 import logic.LogicFactory;
+import logic.PersonLogic;
 
 /**
  *
@@ -136,9 +139,12 @@ public class CreateDonationRecord extends HttpServlet {
         DonationRecordLogic drLogic = LogicFactory.getFor("DonationRecord");
             try {
                 DonationRecord donationRecord = drLogic.createEntity(request.getParameterMap());
-                //create logic for blooddonation logic
-                //using th elogic, call method getwith id and pass to it the id of the blooddonation
-                //using the setter of donation record add the depdendency
+                
+                BloodDonationLogic bloodDonationLogic = LogicFactory.getFor( "BloodDonation" );
+                donationRecord.setBloodDonation(bloodDonationLogic.getWithId(Integer.parseInt(request.getParameterMap().get(DonationRecordLogic.DONATION_ID)[0])));
+                
+                PersonLogic personLogic = LogicFactory.getFor( "Person" );
+                donationRecord.setPerson(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(DonationRecordLogic.PERSON_ID)[0])));
                 drLogic.add(donationRecord);
             } catch (Exception ex) {
                 errorMessage = ex.getMessage();

@@ -97,39 +97,23 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
                 throw new ValidationException(error);
             }
         };
-
-        String personId = parameterMap.get(PERSON_ID)[0];
-        String donationId = parameterMap.get(DONATION_ID)[0];
         String tested = parameterMap.get(TESTED)[0];
         String admin = parameterMap.get(ADMINISTRATOR)[0];
         String hospital = parameterMap.get(HOSPITAL)[0];
         String created = parameterMap.get(CREATED)[0];
         created = created.replace("T", " "); //From Ryan's code
         //validate the data
-        validator.accept(personId, 5);
-        validator.accept(donationId, 5);
         validator.accept(admin, 45);
         validator.accept(hospital, 65);
-        validator.accept(created, 45);
-        validator.accept(tested, 5);
-
         //set values on entity
         entity.setAdministrator(admin);
-        BloodDonationLogic bloodDonationLogic = LogicFactory.getFor( "BloodDonation" );
-        entity.setBloodDonation(bloodDonationLogic.getWithId(Integer.parseInt(donationId)));
-
+        entity.setHospital(hospital);
+        entity.setTested(Boolean.parseBoolean(tested));
         try {
             entity.setCreated(convertStringToDate(created));
         } catch (ValidationException ex) {
             entity.setCreated(new Date());
         }
-        entity.setHospital(hospital);
-
-        PersonLogic personLogic = LogicFactory.getFor( "Person" );
-        Person cc = personLogic.getWithId(Integer.parseInt(donationId));
-        entity.setPerson(cc);
-        entity.setTested(Boolean.parseBoolean(tested));
- 
         return entity;
     }
 
