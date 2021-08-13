@@ -33,6 +33,7 @@ public static String ID = "id";*/
 @WebServlet( name = "CreateBloodBank", urlPatterns = { "/CreateBloodBankTable" } )
 public class CreateBloodBank extends HttpServlet {
             private String errorMessage = null;
+            private static final long serialVersionUID = 1L;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
