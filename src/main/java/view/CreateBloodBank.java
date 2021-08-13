@@ -144,13 +144,15 @@ public class CreateBloodBank extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        log("POST");
-            //tbd
-        try {
-
-        } catch (Exception ex) {
-            errorMessage = ex.getMessage();
-        }
+            log("POST");
+            BloodBankLogic aLogic = LogicFactory.getFor( "BloodBank" );
+            //person as a dependancy
+            try {
+                BloodBank account = aLogic.createEntity( request.getParameterMap() );
+                aLogic.add( account );
+            } catch( Exception ex ) {
+                errorMessage = ex.getMessage();
+            }
 
         if (request.getParameter("add") != null) {
             //if add button is pressed return the same page
@@ -159,6 +161,7 @@ public class CreateBloodBank extends HttpServlet {
             //if view button is pressed redirect to the appropriate table
             response.sendRedirect("BloodBankTable");
         }
+
         
     }
 
