@@ -26,11 +26,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author Jack Avery
+ * @author Milad Mobini
+ * @author Shariar (Shawn) Emami
  */
 public class PersonLogicTest {
-    
+
     private PersonLogic logic;
     private Person expectedEntity;
 
@@ -43,7 +44,7 @@ public class PersonLogicTest {
     final static void tearDownAfterClass() throws Exception {
         TomcatStartUp.stopAndDestroyTomcat();
     }
-    
+
     @BeforeEach
     final void setUp() throws Exception {
 
@@ -53,33 +54,7 @@ public class PersonLogicTest {
         //start a Transaction
         em.getTransaction().begin();
         //em.find takes two arguments, the class type of return result and the primery key.
-       
-        //create first dependency
-        BloodBank bb = em.find(BloodBank.class, 1);
-        //if result is null create the entity and persist it
-        if (bb == null) {
-            //create object
-            bb = new BloodBank();
-            bb.setName("JUNIT");
-            bb.setPrivatelyOwned(true);
-            bb.setEstablished(logic.convertStringToDate("1111-11-11 11:11:11"));
-            bb.setEmplyeeCount(111);
-            //persist the dependency first
-            em.persist(bb);
-        }
-            
-        //create second dependency
-        DonationRecord dr = em.find(DonationRecord.class, 1);
-        if (dr == null) {
-            dr = new DonationRecord();
-            dr.setAdministrator("Jack");
-            dr.setCreated(new SimpleDateFormat("yyyy-MM-dd").parse("2021-08-13"));
-            dr.setHospital("college");
-            dr.setTested(true);
-            //persist the dependency
-            em.persist(dr);
-        }
-       
+
         //create the desired entity
         Person entity = new Person();
         entity.setFirstName("Jane");
@@ -87,9 +62,6 @@ public class PersonLogicTest {
         entity.setPhone("613");
         entity.setAddress("123 Street");
         entity.setBirth(new SimpleDateFormat("yyyy-MM-dd").parse("2021-08-13"));
-        //add second dependency
-//        entity.setDonationRecordSet(Set.of(dr));
-//        entity.setBloodBank(bb);
         //add desired entity to hibernate, entity is now managed.
         //we use merge instead of add so we can get the managed entity.
         expectedEntity = em.merge(entity);
@@ -123,18 +95,26 @@ public class PersonLogicTest {
         //the new size of records must be one less
         assertEquals(originalSize - 1, list.size());
     }
-    
+
     private void assertPersonEquals(Person expected, Person actual) {
         //assert all field to guarantee they are the same
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getPhone(), actual.getPhone());
-        assertEquals(expected.getBirth(), actual.getBirth());
-//        assertEquals(expected.getBloodBank(), actual.getBloodBank());
-//        assertEquals(expected.getDonationRecordSet(), actual.getDonationRecordSet());
+        if (expected.getBloodBank() != null && expected.getDonationRecordSet() != null) {
+            assertEquals(expected.getId(), actual.getId());
+            assertEquals(expected.getFirstName(), actual.getFirstName());
+            assertEquals(expected.getLastName(), actual.getLastName());
+            assertEquals(expected.getPhone(), actual.getPhone());
+            assertEquals(expected.getBirth(), actual.getBirth());
+            assertEquals(expected.getBloodBank().getId(), actual.getBloodBank().getId());
+             assertEquals(expected.getDonationRecordSet(), actual.getDonationRecordSet());
+        } else {
+            assertEquals(expected.getId(), actual.getId());
+            assertEquals(expected.getFirstName(), actual.getFirstName());
+            assertEquals(expected.getLastName(), actual.getLastName());
+            assertEquals(expected.getPhone(), actual.getPhone());
+            assertEquals(expected.getBirth(), actual.getBirth());
+        }
     }
-    
+
     @Test
     final void testGetWithId() {
         //using the id of test record get another record from logic
@@ -143,7 +123,7 @@ public class PersonLogicTest {
         //the two records (testAcounts and returnedDonationRecords) must be the same
         assertPersonEquals(expectedEntity, returnedPerson);
     }
-    
+
     @Test
     final void testGetPersonWithFirstName() {
         int foundFull = 0;
@@ -158,7 +138,7 @@ public class PersonLogicTest {
         }
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
-    
+
     @Test
     final void testGetPersonWithLastName() {
         int foundFull = 0;
@@ -173,7 +153,7 @@ public class PersonLogicTest {
         }
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
-    
+
     @Test
     final void testGetPersonWithPhone() {
         int foundFull = 0;
@@ -188,7 +168,7 @@ public class PersonLogicTest {
         }
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
-    
+
     @Test
     final void testGetPersonWithAddress() {
         int foundFull = 0;
@@ -203,7 +183,7 @@ public class PersonLogicTest {
         }
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
-    
+
     @Test
     final void testGetPersonWithBirth() {
         int foundFull = 0;
@@ -218,7 +198,7 @@ public class PersonLogicTest {
         }
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
-    
+
     @Test
     final void testCreateEntity() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -235,7 +215,7 @@ public class PersonLogicTest {
 
         assertPersonEquals(expectedEntity, returnedPerson);
     }
-    
+
     @Test
     final void testCreateEntityNullAndEmptyValues() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -255,38 +235,38 @@ public class PersonLogicTest {
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.ID, new String[]{});
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.FIRST_NAME, null);
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.FIRST_NAME, new String[]{});
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.LAST_NAME, null);
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.LAST_NAME, new String[]{});
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.PHONE, null);
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.PHONE, new String[]{});
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.ADDRESS, null);
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.ADDRESS, new String[]{});
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.BIRTH, null);
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.BIRTH, new String[]{});
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
     }
-    
+
     @Test
     final void testCreateEntityBadLengthValues() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -314,27 +294,26 @@ public class PersonLogicTest {
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.FIRST_NAME, new String[]{generateString.apply(51)});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.LAST_NAME, new String[]{""});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.LAST_NAME, new String[]{generateString.apply(51)});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.PHONE, new String[]{""});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.PHONE, new String[]{generateString.apply(16)});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(PersonLogic.ADDRESS, new String[]{""});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(PersonLogic.ADDRESS, new String[]{generateString.apply(101)});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
     }
-    
-    
+
     @Test
     final void testCreateEntityEdgeValues() {
         IntFunction<String> generateString = (int length) -> {
@@ -378,7 +357,7 @@ public class PersonLogicTest {
         assertEquals(sampleMap.get(PersonLogic.ADDRESS)[0], returnedPerson.getAddress());
         assertEquals(sampleMap.get(PersonLogic.BIRTH)[0], logic.convertDateToString(returnedPerson.getBirth()));
     }
-    
+
     @Test
     final void testGetColumnNames() {
         List<String> list = logic.getColumnNames();
