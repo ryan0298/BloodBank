@@ -54,6 +54,15 @@ public class PersonLogicTest {
         em.getTransaction().begin();
         //em.find takes two arguments, the class type of return result and the primery key.
         
+        //create the desired entity
+        Person entity = new Person();
+        entity.setFirstName("Jane");
+        entity.setLastName("Doe");
+        entity.setPhone("613");
+        entity.setAddress("123 Street");
+        entity.setBirth(new SimpleDateFormat("yyyy-MM-dd").parse("2021-08-13"));
+        em.persist(entity);
+        
         //create first dependency
         BloodBank bb = em.find(BloodBank.class, 1);
         //if result is null create the entity and persist it
@@ -64,22 +73,16 @@ public class PersonLogicTest {
             bb.setPrivatelyOwned(true);
             bb.setEstablished(logic.convertStringToDate("1111-11-11 11:11:11"));
             bb.setEmplyeeCount(111);
+            //set up 1:1 relation
+            bb.setOwner(entity);
             //persist the dependency first
             em.persist(bb);
         }
-
-        //create the desired entity
-        Person entity = new Person();
-        entity.setFirstName("Jane");
-        entity.setLastName("Doe");
-        entity.setPhone("613");
-        entity.setAddress("123 Street");
-        entity.setBirth(new SimpleDateFormat("yyyy-MM-dd").parse("2021-08-13"));
         
         //add first dependency to the desired entity
         entity.setBloodBank(bb);
         
-        //create dependency with dependency on previously existing person
+        //create second dependency
         DonationRecord dr = em.find(DonationRecord.class, 1);
         if (dr == null) {
             dr = new DonationRecord();
@@ -87,7 +90,7 @@ public class PersonLogicTest {
             dr.setCreated(new SimpleDateFormat("yyyy-MM-dd").parse("2021-08-13"));
             dr.setHospital("college");
             dr.setTested(true);
-            //add dependency to the desired entity
+            //complete 1:1 relation
             dr.setPerson(entity);
             //persist the dependency
             em.persist(dr);
