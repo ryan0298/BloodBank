@@ -71,7 +71,7 @@ public class PersonLogicTest {
         //create the desired entity
         Person entity = new Person();
         entity.setFirstName("Jane");
-        entity.setFirstName("Doe");
+        entity.setLastName("Doe");
         entity.setPhone("613");
         entity.setAddress("123 Street");
         entity.setBirth(new SimpleDateFormat("yyyy-MM-dd").parse("2021-08-13"));
