@@ -107,7 +107,6 @@ public class BloodBankLogic extends GenericLogic<BloodBank, BloodBankDAL>{
 
         entity.setPrivatelyOwned(Boolean.valueOf(privatelyOwned));
         
-        //entity.setEstablished(established);
         try {
             entity.setEstablished(convertStringToDate(newEstablishedRemovedT));
         }catch (ValidationException e) {

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author ryanh
  */
 public class BloodBankDAL extends GenericDAL<BloodBank>{
@@ -56,13 +55,5 @@ public class BloodBankDAL extends GenericDAL<BloodBank>{
         Map<String, Object> map = new HashMap<>();
         map.put( "ownerId", ownerId);
         return findResult("BloodBank.findByOwner", map);
-    }
-    
-//    public List<BloodBank> findContaining(String search) {//Query might be missing in BloodBank class
-//        Map<String, Object> map = new HashMap<>();
-//        map.put( "search", search);
-//        return findResults("BloodBank.findByContaining", map);
-//    }
-    
-    
+    }    
 }

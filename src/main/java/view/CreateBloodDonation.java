@@ -58,8 +58,6 @@ public class CreateBloodDonation extends HttpServlet {
             out.println("<br>");
 
             out.println("Blood Group:<br>");
-            //out.printf( "<input type=\"text\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.BLOOD_GROUP );
-
             out.printf("<select name=\"%s\" id=\"%s\">\n"
                     + "    <option value=\"A\">A</option>\n"
                     + "    <option value=\"B\">B</option>\n"
@@ -67,25 +65,12 @@ public class CreateBloodDonation extends HttpServlet {
                     + "    <option value=\"O\">O</option>\n"
                     + "  </select>", BloodDonationLogic.BLOOD_GROUP, BloodDonationLogic.BLOOD_GROUP);
 
-//            out.printf( "select name=\"%s\"", BloodDonationLogic.BLOOD_GROUP);
-//            out.printf( "option name=\"%s\" value=\"%s\">A</option>", BloodDonationLogic.BLOOD_GROUP, "A");
-//            out.printf( "option name=\"%s\" value=\"%s\">B</option>", BloodDonationLogic.BLOOD_GROUP, "B");
-//            out.printf( "option name=\"%s\" value=\"%s\">AB</option>", BloodDonationLogic.BLOOD_GROUP, "AB");
-//            out.printf( "option name=\"%s\" value=\"%s\">O</option>", BloodDonationLogic.BLOOD_GROUP, "O");
-//            out.println( "</select>");
-//            out.printf( "<input type=\"radio\" name=\"%s\" value=\"A\">A<br>", BloodDonationLogic.RHESUS_FACTOR );
-//            out.printf( "<input type=\"radio\" name=\"%s\" value=\"B\">B<br>", BloodDonationLogic.RHESUS_FACTOR );
-//            out.printf( "<input type=\"radio\" name=\"%s\" value=\"AB\">AB<br>", BloodDonationLogic.RHESUS_FACTOR );
-//            out.printf( "<input type=\"radio\" name=\"%s\" value=\"O\">O<br>", BloodDonationLogic.RHESUS_FACTOR );
             out.println("<br>");
 
             out.println("Created:<br>");
             out.printf("<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.CREATED);
             out.println("<br>");
 
-//            out.println( "ID:<br>" );
-//            out.printf( "<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.ID );
-//            out.println( "<br>" );
             out.println("Milliliters:<br>");
             out.printf("<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodDonationLogic.MILLILITERS);
             out.println("<br>");

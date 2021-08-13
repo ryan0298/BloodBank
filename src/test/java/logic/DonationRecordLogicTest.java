@@ -277,8 +277,6 @@ class DonationRecordLogicTest {
         Consumer<Map<String, String[]>> fillMap = (Map<String, String[]> map) -> {
             map.clear();
             map.put(DonationRecordLogic.ID, new String[]{Integer.toString(expectedEntity.getId())});
-//            map.put(DonationRecordLogic.PERSON_ID, new String[]{expectedEntity.getPerson().getId().toString()});
-//            map.put(DonationRecordLogic.DONATION_ID, new String[]{expectedEntity.getBloodDonation().getId().toString()});
             map.put(DonationRecordLogic.TESTED, new String[]{Boolean.toString(expectedEntity.getTested())});
             map.put(DonationRecordLogic.ADMINISTRATOR, new String[]{expectedEntity.getAdministrator()});
             map.put(DonationRecordLogic.HOSPITAL, new String[]{expectedEntity.getHospital()});
@@ -323,8 +321,6 @@ class DonationRecordLogicTest {
         Consumer<Map<String, String[]>> fillMap = (Map<String, String[]> map) -> {
             map.clear();
             map.put(DonationRecordLogic.ID, new String[]{Integer.toString(expectedEntity.getId())});
-//            map.put(DonationRecordLogic.PERSON_ID, new String[]{expectedEntity.getPerson().getId().toString()});
-//            map.put(DonationRecordLogic.DONATION_ID, new String[]{expectedEntity.getBloodDonation().getId().toString()});
             map.put(DonationRecordLogic.TESTED, new String[]{Boolean.toString(expectedEntity.getTested())});
             map.put(DonationRecordLogic.ADMINISTRATOR, new String[]{expectedEntity.getAdministrator()});
             map.put(DonationRecordLogic.HOSPITAL, new String[]{expectedEntity.getHospital()});
@@ -345,12 +341,6 @@ class DonationRecordLogicTest {
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(DonationRecordLogic.ID, new String[]{generateString.apply(46)});
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
-
-//        fillMap.accept(sampleMap);
-//        sampleMap.replace(DonationRecordLogic.TESTED, new String[]{""});
-//        assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
-//        sampleMap.replace(DonationRecordLogic.TESTED, new String[]{generateString.apply(46)});
-//        assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
 
         fillMap.accept(sampleMap);
         sampleMap.replace(DonationRecordLogic.ADMINISTRATOR, new String[]{""});
@@ -377,8 +367,6 @@ class DonationRecordLogicTest {
 
         Map<String, String[]> sampleMap = new HashMap<>();
         sampleMap.put(DonationRecordLogic.ID, new String[]{Integer.toString(expectedEntity.getId())});
-//        sampleMap.put(DonationRecordLogic.PERSON_ID, new String[]{expectedEntity.getPerson().getId().toString()});
-//        sampleMap.put(DonationRecordLogic.DONATION_ID, new String[]{expectedEntity.getBloodDonation().getId().toString()});
         sampleMap.put(DonationRecordLogic.TESTED, new String[]{Boolean.toString(expectedEntity.getTested())});
         sampleMap.put(DonationRecordLogic.ADMINISTRATOR, new String[]{expectedEntity.getAdministrator()});
         sampleMap.put(DonationRecordLogic.HOSPITAL, new String[]{expectedEntity.getHospital()});
@@ -387,8 +375,6 @@ class DonationRecordLogicTest {
         //idealy every test should be in its own method
         DonationRecord returnedDonationRecord = logic.createEntity(sampleMap);
         assertEquals(Integer.parseInt(sampleMap.get(DonationRecordLogic.ID)[0]), returnedDonationRecord.getId());
-//        assertEquals(sampleMap.get(DonationRecordLogic.PERSON_ID)[0], returnedDonationRecord.getPerson().getId().toString());
-//        assertEquals(sampleMap.get(DonationRecordLogic.DONATION_ID)[0], returnedDonationRecord.getBloodDonation().getId().toString());
         assertEquals(sampleMap.get(DonationRecordLogic.TESTED)[0], Boolean.toString(returnedDonationRecord.getTested()));
         assertEquals(sampleMap.get(DonationRecordLogic.ADMINISTRATOR)[0], returnedDonationRecord.getAdministrator());
         assertEquals(sampleMap.get(DonationRecordLogic.HOSPITAL)[0], returnedDonationRecord.getHospital());
@@ -396,8 +382,6 @@ class DonationRecordLogicTest {
 
         sampleMap = new HashMap<>();
         sampleMap.put(DonationRecordLogic.ID, new String[]{Integer.toString(1)});
-//        sampleMap.put(DonationRecordLogic.PERSON_ID, new String[]{generateString.apply(5)});
-//        sampleMap.put(DonationRecordLogic.DONATION_ID, new String[]{generateString.apply(5)});
         sampleMap.put(DonationRecordLogic.TESTED, new String[]{"false"});
         sampleMap.put(DonationRecordLogic.ADMINISTRATOR, new String[]{generateString.apply(45)});
         sampleMap.put(DonationRecordLogic.HOSPITAL, new String[]{generateString.apply(65)});
@@ -406,8 +390,6 @@ class DonationRecordLogicTest {
         //idealy every test should be in its own method
         returnedDonationRecord = logic.createEntity(sampleMap);
         assertEquals(Integer.parseInt(sampleMap.get(DonationRecordLogic.ID)[0]), returnedDonationRecord.getId());
-//        assertEquals(sampleMap.get(DonationRecordLogic.PERSON_ID)[0], returnedDonationRecord.getPerson().getId().toString());
-//        assertEquals(sampleMap.get(DonationRecordLogic.DONATION_ID)[0], returnedDonationRecord.getBloodDonation().getId().toString());
         assertEquals(sampleMap.get(DonationRecordLogic.TESTED)[0], Boolean.toString(returnedDonationRecord.getTested()));
         assertEquals(sampleMap.get(DonationRecordLogic.ADMINISTRATOR)[0], returnedDonationRecord.getAdministrator());
         assertEquals(sampleMap.get(DonationRecordLogic.HOSPITAL)[0], returnedDonationRecord.getHospital());
@@ -437,7 +419,4 @@ class DonationRecordLogicTest {
         assertEquals(expectedEntity.getHospital(), list.get(5));
         assertEquals(expectedEntity.getCreated(), list.get(6));
     }
-    /*
-    Temp
-     */
 }
