@@ -25,7 +25,8 @@ import entity.BloodDonation;
 import entity.BloodBank;
 import entity.BloodGroup;
 import entity.RhesusFactor;
-
+import entity.DonationRecord;
+import java.util.Iterator;
 /**
  * This class is has the example of how to add dependency when working with junit. it is commented because some
  * components need to be made first. You will have to import everything you need.
@@ -128,10 +129,19 @@ class BloodDonationTest {
      */
     private void assertBloodDonationEquals( BloodDonation expected, BloodDonation actual ) {
         //assert all field to guarantee they are the same
-        assertEquals( expected.getBloodBank(), actual.getBloodBank() );
+        assertEquals( expected.getBloodBank().getId(), actual.getBloodBank().getId() );
         assertEquals( expected.getBloodGroup(), actual.getBloodGroup() );
+        
 //        assertEquals( expected.getCreated(), actual.getCreated() );
-        assertEquals( expected.getDonationRecordSet(), actual.getDonationRecordSet() );
+        assertTrue( expected.getCreated().equals(actual.getCreated()));
+//        assertEquals( expected.getDonationRecordSet(), actual.getDonationRecordSet() );
+        assertTrue(expected.equals(actual));
+        
+        Iterator<DonationRecord> iteration = actual.getDonationRecordSet().iterator();
+        while(iteration.hasNext()) {
+            assertTrue(actual.equals(expected));
+        }  
+        
         assertEquals( expected.getId(), actual.getId() );
         assertEquals( expected.getMilliliters(), actual.getMilliliters() );
         assertEquals( expected.getRhd(), actual.getRhd() );
@@ -195,36 +205,36 @@ class BloodDonationTest {
             assertEquals( expectedEntity.getBloodBank().getId(), bloodDonation.getBloodBank().getId() );
         }
     }    
+
     
     @Test
     final void testCreateEntityAndAdd() {
+        
         Map<String, String[]> sampleMap = new HashMap<>();
-        sampleMap.put( BloodDonationLogic.BANK_ID, new String[]{ "1" } );
-        sampleMap.put( BloodDonationLogic.BLOOD_GROUP, new String[]{ "A" } );
-        sampleMap.put( BloodDonationLogic.CREATED, new String[]{ "1111-11-11T11:11:11" } );
-//        sampleMap.put( BloodDonationLogic.ID, new String[]{ "5" } );
-        sampleMap.put( BloodDonationLogic.MILLILITERS, new String[]{ "5" } );
-        sampleMap.put( BloodDonationLogic.RHESUS_FACTOR, new String[]{ "+" } );
-
+        
+        sampleMap.put(BloodDonationLogic.ID, new String[]{Integer.toString(expectedEntity.getId())});
+        sampleMap.put(BloodDonationLogic.BANK_ID, new String[]{expectedEntity.getBloodBank().getId().toString()});
+        sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
+        sampleMap.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
+        sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
+        sampleMap.put(BloodDonationLogic.RHESUS_FACTOR, new String[]{expectedEntity.getRhd().name()});
         
         
-        
-        BloodDonation returnedBloodDonation = logic.createEntity( sampleMap );
-        logic.add( returnedBloodDonation );
-
-        returnedBloodDonation = logic.getWithId(returnedBloodDonation.getId() );
-
-//        assertEquals( sampleMap.get( BloodDonationLogic.BANK_ID )[ 0 ], returnedBloodDonation.getId() );
-//        assertEquals( sampleMap.get( BloodDonationLogic.BANK_ID )[ 0 ], returnedBloodDonation.getBloodBank().getId() );
-        assertEquals( sampleMap.get( BloodDonationLogic.BLOOD_GROUP )[ 0 ], returnedBloodDonation.getBloodGroup().A.toString() );
-        assertEquals( sampleMap.get( BloodDonationLogic.CREATED )[ 0 ], returnedBloodDonation.getCreated().toString() );
-        assertEquals( sampleMap.get( BloodDonationLogic.ID )[ 0 ], returnedBloodDonation.getId().toString() );
-        assertEquals( sampleMap.get( BloodDonationLogic.MILLILITERS )[ 0 ], returnedBloodDonation.getMilliliters() );
-        assertEquals( sampleMap.get( BloodDonationLogic.RHESUS_FACTOR )[ 0 ], returnedBloodDonation.getRhd().toString() );
+        BloodDonation returnedBloodDonation = logic.createEntity(sampleMap);
         
 
+        //assertBloodDonationEquals(expectedEntity, returnedBloodDonation);
+        
+        assertEquals( sampleMap.get( BloodDonationLogic.BANK_ID )[ 0 ], returnedBloodDonation.getBloodBank().getId().toString() );
+        assertEquals( sampleMap.get( BloodDonationLogic.BLOOD_GROUP )[ 0 ], returnedBloodDonation.getBloodGroup().name() );
+        assertEquals( sampleMap.get( BloodDonationLogic.CREATED )[ 0 ], logic.convertDateToString(returnedBloodDonation.getCreated()) );
+        assertEquals( sampleMap.get( BloodDonationLogic.ID )[ 0 ], Integer.toString(returnedBloodDonation.getId()) );
+        assertEquals( sampleMap.get( BloodDonationLogic.MILLILITERS )[ 0 ], Integer.toString(returnedBloodDonation.getMilliliters()) );
+        assertEquals( sampleMap.get( BloodDonationLogic.RHESUS_FACTOR )[ 0 ], returnedBloodDonation.getRhd().name() );
+        
+        assertEquals(expectedEntity, returnedBloodDonation);
+        
         logic.delete( returnedBloodDonation );
     }
-    
     
 }
