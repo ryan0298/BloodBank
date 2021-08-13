@@ -23,12 +23,12 @@ import static logic.BloodDonationLogic.RHESUS_FACTOR;
  */
 public class BloodBankLogic extends GenericLogic<BloodBank, BloodBankDAL>{
     
-    public String OWNER_ID = "owner_id";
-    public String PRIVATELY_OWNED = "privately_owned";
-    public String ESTABLISHED = "established";
-    public String NAME = "name";
-    public String EMPLOYEE_COUNT = "employee_count";
-    public String ID = "id";
+    public static String OWNER_ID = "owner_id";
+    public static String PRIVATELY_OWNED = "privately_owned";
+    public static String ESTABLISHED = "established";
+    public static String NAME = "name";
+    public static String EMPLOYEE_COUNT = "employee_count";
+    public static String ID = "id";
     
     BloodBankLogic() {
         super( new BloodBankDAL() );
