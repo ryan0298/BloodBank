@@ -212,23 +212,27 @@ class BloodDonationTest {
         
         Map<String, String[]> sampleMap = new HashMap<>();
         
-        sampleMap.put(BloodDonationLogic.ID, new String[]{Integer.toString(expectedEntity.getId())});
-        sampleMap.put(BloodDonationLogic.BANK_ID, new String[]{expectedEntity.getBloodBank().getId().toString()});
+        //sampleMap.put(BloodDonationLogic.ID, new String[]{Integer.toString(expectedEntity.getId())});
+        sampleMap.put(BloodDonationLogic.BANK_ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
         sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
         sampleMap.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
         sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
         sampleMap.put(BloodDonationLogic.RHESUS_FACTOR, new String[]{expectedEntity.getRhd().name()});
         
-        
         BloodDonation returnedBloodDonation = logic.createEntity(sampleMap);
         
-
-        //assertBloodDonationEquals(expectedEntity, returnedBloodDonation);
+        logic.add( returnedBloodDonation );
         
-        assertEquals( sampleMap.get( BloodDonationLogic.BANK_ID )[ 0 ], returnedBloodDonation.getBloodBank().getId().toString() );
+        returnedBloodDonation = logic.getWithId(returnedBloodDonation.getId() );
+
+        
+//        System.out.println("Bank ID: "  + BloodDonationLogic.BANK_ID);
+//        System.out.println("returnedBloodDonation: "  + returnedBloodDonation.getBloodBank().getId().toString());
+        
+        assertEquals( sampleMap.get( BloodDonationLogic.BANK_ID )[ 0 ], Integer.toString(returnedBloodDonation.getBloodBank().getId()) );
         assertEquals( sampleMap.get( BloodDonationLogic.BLOOD_GROUP )[ 0 ], returnedBloodDonation.getBloodGroup().name() );
         assertEquals( sampleMap.get( BloodDonationLogic.CREATED )[ 0 ], logic.convertDateToString(returnedBloodDonation.getCreated()) );
-        assertEquals( sampleMap.get( BloodDonationLogic.ID )[ 0 ], Integer.toString(returnedBloodDonation.getId()) );
+        //assertEquals( sampleMap.get( BloodDonationLogic.ID )[ 0 ], Integer.toString(returnedBloodDonation.getId()) );
         assertEquals( sampleMap.get( BloodDonationLogic.MILLILITERS )[ 0 ], Integer.toString(returnedBloodDonation.getMilliliters()) );
         assertEquals( sampleMap.get( BloodDonationLogic.RHESUS_FACTOR )[ 0 ], returnedBloodDonation.getRhd().name() );
         
