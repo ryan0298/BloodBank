@@ -141,7 +141,9 @@ public class PersonLogic extends GenericLogic<Person, PersonDAL>  {
                 e.getLastName(),
                 e.getPhone(),
                 e.getAddress(),
-                e.getBirth());
+                e.getBirth(),
+                e.getBloodBank(),
+                e.getDonationRecordSet());
     }
     
 }
