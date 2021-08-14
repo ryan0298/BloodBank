@@ -143,6 +143,10 @@ class DonationRecordLogicTest {
     final void tearDown() throws Exception {
         if (expectedEntity != null) {
             logic.delete(expectedEntity);
+            BloodDonationLogic bdl = LogicFactory.getFor("BloodDonation");
+            bdl.delete(expectedEntity.getBloodDonation());
+            PersonLogic pl = LogicFactory.getFor("Person");
+            pl.delete(expectedEntity.getPerson());
         }
     }
 
