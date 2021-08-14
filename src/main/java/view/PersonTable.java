@@ -15,7 +15,8 @@ import logic.Logic;
 import logic.LogicFactory;
 
 /**
- *
+ * WebServlet for displaying Person entities.
+ * 
  * @author Jack Avery
  * @author Ryanh
  * @author Milad Mobini
