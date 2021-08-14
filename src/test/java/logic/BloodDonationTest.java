@@ -426,11 +426,11 @@ class BloodDonationTest {
     final void testExtractDataAsList() {
         List<?> list = logic.extractDataAsList( expectedEntity );
         
-        assertEquals( expectedEntity.getBloodBank().getId(), list.get( 0 ) );
+        assertEquals( expectedEntity.getBloodBank(), list.get( 0 ) );
         assertEquals( expectedEntity.getMilliliters(), list.get( 1 ) );
-        assertEquals( expectedEntity.getBloodGroup().name(), list.get( 2 ) );
-        assertEquals( expectedEntity.getRhd().name(), list.get( 3 ) );
-        assertEquals( logic.convertDateToString(expectedEntity.getCreated()), list.get( 4 ) );
+        assertEquals( expectedEntity.getBloodGroup(), list.get( 2 ) );
+        assertEquals( expectedEntity.getRhd(), list.get( 3 ) );
+        assertEquals( expectedEntity.getCreated(), list.get( 4 ) );
         assertEquals( expectedEntity.getId(), list.get( 5 ) );
     }
     
