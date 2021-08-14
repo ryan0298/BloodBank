@@ -3,8 +3,6 @@ package logic;
 import common.EMFactory;
 import common.TomcatStartUp;
 import common.ValidationException;
-import entity.BloodBank;
-import entity.DonationRecord;
 import entity.BloodDonation;
 import entity.BloodGroup;
 import entity.DonationRecord;
@@ -24,11 +22,9 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
 
 /**
  * @author Milad Mobini
@@ -76,19 +72,6 @@ class DonationRecordLogicTest {
         //check if the depdendecy exists on DB already
         //em.find takes two arguments, the class type of return result and the primery key.
 
-        BloodBank bb = em.find(BloodBank.class, 1);
-        //if result is null create the entity and persist it
-        if (bb == null) {
-            //cearet object
-            bb = new BloodBank();
-            bb.setName("JUNIT");
-            bb.setPrivatelyOwned(true);
-            bb.setEstablished(logic.convertStringToDate("1111-11-11 11:11:11"));
-            bb.setEmplyeeCount(111);
-            //persist the dependency first
-            em.persist(bb);
-        }
-
         BloodDonation bd = em.find(BloodDonation.class, 1);
         //if result is null create the entity and persist it
         if (bd == null) {
@@ -98,7 +81,6 @@ class DonationRecordLogicTest {
             bd.setBloodGroup(BloodGroup.AB);
             bd.setRhd(RhesusFactor.Negative);
             bd.setCreated(logic.convertStringToDate("1111-11-11 11:11:11"));
-            bd.setBloodBank(bb);
             //persist the dependency first
             em.persist(bd);
         }
@@ -135,7 +117,8 @@ class DonationRecordLogicTest {
     }
 
     /**
-     * runs after each method and removes the expected entity
+     * runs after each method and removes the expected entity with all
+     * dependencies
      *
      * @throws Exception
      */
@@ -321,8 +304,6 @@ class DonationRecordLogicTest {
     final void testCreateEntity() {
         Map<String, String[]> sampleMap = new HashMap<>();
         sampleMap.put(DonationRecordLogic.ID, new String[]{Integer.toString(expectedEntity.getId())});
-        sampleMap.put(DonationRecordLogic.PERSON_ID, new String[]{expectedEntity.getPerson().getId().toString()});
-        sampleMap.put(DonationRecordLogic.DONATION_ID, new String[]{expectedEntity.getBloodDonation().getId().toString()});
         sampleMap.put(DonationRecordLogic.TESTED, new String[]{Boolean.toString(expectedEntity.getTested())});
         sampleMap.put(DonationRecordLogic.ADMINISTRATOR, new String[]{expectedEntity.getAdministrator()});
         sampleMap.put(DonationRecordLogic.HOSPITAL, new String[]{expectedEntity.getHospital()});
@@ -333,6 +314,32 @@ class DonationRecordLogicTest {
         returnedDonationRecord.setPerson(expectedEntity.getPerson());
 
         assertDonationRecordEquals(expectedEntity, returnedDonationRecord);
+    }
+
+    /**
+     * test the createEntity method and add method from the donation record
+     * logic
+     */
+    @Test
+    final void testCreateEntityAndAdd() {
+        Map<String, String[]> sampleMap = new HashMap<>();
+        sampleMap.put(DonationRecordLogic.TESTED, new String[]{Boolean.toString(expectedEntity.getTested())});
+        sampleMap.put(DonationRecordLogic.ADMINISTRATOR, new String[]{expectedEntity.getAdministrator()});
+        sampleMap.put(DonationRecordLogic.HOSPITAL, new String[]{expectedEntity.getHospital()});
+        sampleMap.put(DonationRecordLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
+
+        DonationRecord returnedDonationRecord = logic.createEntity(sampleMap);
+        returnedDonationRecord.setBloodDonation(expectedEntity.getBloodDonation());
+        returnedDonationRecord.setPerson(expectedEntity.getPerson());
+        logic.add(returnedDonationRecord);
+
+        returnedDonationRecord = logic.getWithId(returnedDonationRecord.getId());
+        
+        assertEquals(sampleMap.get(DonationRecordLogic.TESTED)[0], Boolean.toString(returnedDonationRecord.getTested()));
+        assertEquals(sampleMap.get(DonationRecordLogic.ADMINISTRATOR)[0], returnedDonationRecord.getAdministrator());
+        assertEquals(sampleMap.get(DonationRecordLogic.HOSPITAL)[0], returnedDonationRecord.getHospital());
+
+        logic.delete(returnedDonationRecord);
     }
 
     /**

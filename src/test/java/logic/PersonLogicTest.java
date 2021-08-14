@@ -133,20 +133,17 @@ public class PersonLogicTest {
     private void assertPersonEquals(Person expected, Person actual) {
         //assert all field to guarantee they are the same
         if (expected.getBloodBank() != null && expected.getDonationRecordSet() != null) {
-            assertEquals(expected.getId(), actual.getId());
-            assertEquals(expected.getFirstName(), actual.getFirstName());
-            assertEquals(expected.getLastName(), actual.getLastName());
-            assertEquals(expected.getPhone(), actual.getPhone());
-            assertEquals(expected.getBirth(), actual.getBirth());
             assertEquals(expected.getBloodBank().getId(), actual.getBloodBank().getId());
-            assertEquals(expected.getDonationRecordSet(), actual.getDonationRecordSet());
-        } else {
-            assertEquals(expected.getId(), actual.getId());
-            assertEquals(expected.getFirstName(), actual.getFirstName());
-            assertEquals(expected.getLastName(), actual.getLastName());
-            assertEquals(expected.getPhone(), actual.getPhone());
-            assertEquals(expected.getBirth(), actual.getBirth());
         }
+        if (expected.getDonationRecordSet() != null && expected.getDonationRecordSet() != null) {
+            assertEquals(expected.getDonationRecordSet(), actual.getDonationRecordSet());
+        }
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getPhone(), actual.getPhone());
+        assertEquals(expected.getBirth(), actual.getBirth());
+
     }
 
     /**
@@ -269,6 +266,35 @@ public class PersonLogicTest {
         returnedPerson.setDonationRecordSet(expectedEntity.getDonationRecordSet());
 
         assertPersonEquals(expectedEntity, returnedPerson);
+    }
+
+    /**
+     * Test to ensure functionality of PersonLogic.createEntity() and
+     * PersonLogic.add().
+     */
+    @Test
+    final void testCreateEntityAndAdd() {
+        Map<String, String[]> sampleMap = new HashMap<>();
+        sampleMap.put(PersonLogic.FIRST_NAME, new String[]{expectedEntity.getFirstName()});
+        sampleMap.put(PersonLogic.LAST_NAME, new String[]{expectedEntity.getLastName()});
+        sampleMap.put(PersonLogic.PHONE, new String[]{expectedEntity.getPhone()});
+        sampleMap.put(PersonLogic.ADDRESS, new String[]{expectedEntity.getAddress()});
+        sampleMap.put(PersonLogic.BIRTH, new String[]{logic.convertDateToString(expectedEntity.getBirth())});
+
+        Person returnedPerson = logic.createEntity(sampleMap);
+        returnedPerson.setBloodBank(expectedEntity.getBloodBank());
+        returnedPerson.setDonationRecordSet(expectedEntity.getDonationRecordSet());
+        logic.add(returnedPerson);
+
+        returnedPerson = logic.getWithId(returnedPerson.getId());
+        
+        assertEquals(sampleMap.get(PersonLogic.FIRST_NAME)[0], returnedPerson.getFirstName());
+        assertEquals(sampleMap.get(PersonLogic.LAST_NAME)[0], returnedPerson.getLastName());
+        assertEquals(sampleMap.get(PersonLogic.PHONE)[0], returnedPerson.getPhone());
+        assertEquals(sampleMap.get(PersonLogic.ADDRESS)[0], returnedPerson.getAddress());
+        assertEquals(sampleMap.get(PersonLogic.BIRTH)[0], logic.convertDateToString(returnedPerson.getBirth()));
+        
+        logic.delete(returnedPerson);
     }
 
     /**
