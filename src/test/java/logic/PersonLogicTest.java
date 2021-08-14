@@ -3,8 +3,6 @@ package logic;
 import common.EMFactory;
 import common.TomcatStartUp;
 import common.ValidationException;
-import entity.BloodBank;
-import entity.DonationRecord;
 import entity.Person;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -12,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import javax.persistence.EntityManager;
@@ -26,25 +23,48 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
+ * Test class for the Person entity, including PersonLogic.
+ *
  * @author Jack Avery
  * @author Milad Mobini
  * @author Shariar (Shawn) Emami
  */
 public class PersonLogicTest {
 
+    /**
+     * The Logic entity for Person for logic calls.
+     */
     private PersonLogic logic;
+    /**
+     * The expected result for tests. Configured in setUp().
+     */
     private Person expectedEntity;
 
+    /**
+     * Starts up TomCat before tests begin.
+     *
+     * @throws Exception
+     */
     @BeforeAll
     final static void setUpBeforeClass() throws Exception {
         TomcatStartUp.createTomcat("/SimpleBloodBank", "common.ServletListener", "simplebloodbank-PU-test");
     }
 
+    /**
+     * Shuts down TomCat once all tests are complete.
+     *
+     * @throws Exception
+     */
     @AfterAll
     final static void tearDownAfterClass() throws Exception {
         TomcatStartUp.stopAndDestroyTomcat();
     }
 
+    /**
+     * Re-creates the Person entity before each test.
+     *
+     * @throws Exception
+     */
     @BeforeEach
     final void setUp() throws Exception {
 
@@ -71,6 +91,11 @@ public class PersonLogicTest {
         em.close();
     }
 
+    /**
+     * Removes the Person from the database after each test is completed.
+     *
+     * @throws Exception
+     */
     @AfterEach
     final void tearDown() throws Exception {
         if (expectedEntity != null) {
@@ -78,6 +103,9 @@ public class PersonLogicTest {
         }
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getAll().
+     */
     @Test
     final void testGetAll() {
         //get all the records from the DB
@@ -96,6 +124,12 @@ public class PersonLogicTest {
         assertEquals(originalSize - 1, list.size());
     }
 
+    /**
+     * Test to assert that two instances of Person are equal.
+     *
+     * @param expected Person - Person containing the expected parameters.
+     * @param actual Person - Person to compare to expected parameters.
+     */
     private void assertPersonEquals(Person expected, Person actual) {
         //assert all field to guarantee they are the same
         if (expected.getBloodBank() != null && expected.getDonationRecordSet() != null) {
@@ -105,7 +139,7 @@ public class PersonLogicTest {
             assertEquals(expected.getPhone(), actual.getPhone());
             assertEquals(expected.getBirth(), actual.getBirth());
             assertEquals(expected.getBloodBank().getId(), actual.getBloodBank().getId());
-             assertEquals(expected.getDonationRecordSet(), actual.getDonationRecordSet());
+            assertEquals(expected.getDonationRecordSet(), actual.getDonationRecordSet());
         } else {
             assertEquals(expected.getId(), actual.getId());
             assertEquals(expected.getFirstName(), actual.getFirstName());
@@ -115,6 +149,9 @@ public class PersonLogicTest {
         }
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getWithId().
+     */
     @Test
     final void testGetWithId() {
         //using the id of test record get another record from logic
@@ -124,6 +161,9 @@ public class PersonLogicTest {
         assertPersonEquals(expectedEntity, returnedPerson);
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getPersonWithFirstName().
+     */
     @Test
     final void testGetPersonWithFirstName() {
         int foundFull = 0;
@@ -139,6 +179,9 @@ public class PersonLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getPersonWithLastName().
+     */
     @Test
     final void testGetPersonWithLastName() {
         int foundFull = 0;
@@ -154,6 +197,9 @@ public class PersonLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getPersonWithPhone().
+     */
     @Test
     final void testGetPersonWithPhone() {
         int foundFull = 0;
@@ -169,6 +215,9 @@ public class PersonLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getPersonWithAddress().
+     */
     @Test
     final void testGetPersonWithAddress() {
         int foundFull = 0;
@@ -184,6 +233,9 @@ public class PersonLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getPersonWithBirth().
+     */
     @Test
     final void testGetPersonWithBirth() {
         int foundFull = 0;
@@ -199,6 +251,9 @@ public class PersonLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.createEntity().
+     */
     @Test
     final void testCreateEntity() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -216,6 +271,10 @@ public class PersonLogicTest {
         assertPersonEquals(expectedEntity, returnedPerson);
     }
 
+    /**
+     * Test to ensure expected results come from using null/empty values on
+     * PersonLogic.createEntity().
+     */
     @Test
     final void testCreateEntityNullAndEmptyValues() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -267,6 +326,10 @@ public class PersonLogicTest {
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
     }
 
+    /**
+     * Test to ensure expected results come from using bad length parameters on
+     * PersonLogic.createEntity().
+     */
     @Test
     final void testCreateEntityBadLengthValues() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -314,6 +377,10 @@ public class PersonLogicTest {
         assertThrows(ValidationException.class, () -> logic.createEntity(sampleMap));
     }
 
+    /**
+     * Test to ensure expected results come from using edge case parameters on
+     * PersonLogic.createEntity().
+     */
     @Test
     final void testCreateEntityEdgeValues() {
         IntFunction<String> generateString = (int length) -> {
@@ -358,18 +425,27 @@ public class PersonLogicTest {
         assertEquals(sampleMap.get(PersonLogic.BIRTH)[0], logic.convertDateToString(returnedPerson.getBirth()));
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getColumnNames().
+     */
     @Test
     final void testGetColumnNames() {
         List<String> list = logic.getColumnNames();
         assertEquals(Arrays.asList("ID", "First Name", "Last Name", "Phone Number", "Address", "Date of Birth"), list);
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.getColumnCodes().
+     */
     @Test
     final void testGetColumnCodes() {
         List<String> list = logic.getColumnCodes();
         assertEquals(Arrays.asList(PersonLogic.ID, PersonLogic.FIRST_NAME, PersonLogic.LAST_NAME, PersonLogic.PHONE, PersonLogic.ADDRESS, PersonLogic.BIRTH), list);
     }
 
+    /**
+     * Test to ensure functionality of PersonLogic.extractDataAsList().
+     */
     @Test
     final void testExtractDataAsList() {
         List<?> list = logic.extractDataAsList(expectedEntity);
