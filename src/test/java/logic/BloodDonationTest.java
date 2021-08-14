@@ -150,6 +150,7 @@ class BloodDonationTest {
         if (expected.getBloodBank() != null) {
             assertEquals(expected.getBloodBank().getId(), actual.getBloodBank().getId());
         }
+        assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getBloodGroup(), actual.getBloodGroup());
         assertTrue(expected.getCreated().compareTo(actual.getCreated()) == 0);
         assertEquals(expected.getMilliliters(), actual.getMilliliters());
