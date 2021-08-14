@@ -91,7 +91,7 @@ public class BloodDonationLogic extends GenericLogic<BloodDonation, BloodDonatio
             }
         };
 
-        String bankId = paremeterMap.get(BANK_ID)[0];
+        //String bankId = paremeterMap.get(BANK_ID)[0];
         String bloodGroup = paremeterMap.get(BLOOD_GROUP)[0];
         String created = paremeterMap.get(CREATED)[0];//Initial date with the T placeholder
         String newCreatedRemovedT = created.replace("T", " ");//Updated created without the T placeholder

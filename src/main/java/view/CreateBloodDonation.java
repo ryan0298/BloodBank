@@ -147,13 +147,21 @@ public class CreateBloodDonation extends HttpServlet {
             throws ServletException, IOException {
         log("POST");
 
+        //Create Logic entities
         BloodDonationLogic bloodDonationLogic = LogicFactory.getFor("BloodDonation");
         BloodBankLogic bloodBankLogic = LogicFactory.getFor( "BloodBank" );
+        
         try {
+            //Gather the parameter request's parameter map and create an entity
             BloodDonation bloodDonation = bloodDonationLogic.createEntity(request.getParameterMap());
-             BloodBank bloodBank = bloodBankLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodDonationLogic.BANK_ID)[0]));             
+            
+            //Gather BloodBank's blood bank id to be used to set the bloodbank
+             BloodBank bloodBank = bloodBankLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodDonationLogic.BANK_ID)[0]));  
+             
+             //Set the BloodBank
              bloodDonation.setBloodBank(bloodBank);
 
+             //Add the bloodDonation to bloodDonationLogic
             bloodDonationLogic.add(bloodDonation);
         } catch (Exception ex) {
             errorMessage = ex.getMessage();
