@@ -221,7 +221,6 @@ class BloodDonationTest {
 
         Map<String, String[]> sampleMap = new HashMap<>();
 
-        sampleMap.put(BloodDonationLogic.BANK_ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
         sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
         sampleMap.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
         sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
@@ -233,7 +232,6 @@ class BloodDonationTest {
 
         returnedBloodDonation = logic.getWithId(returnedBloodDonation.getId());
 
-        assertEquals(sampleMap.get(BloodDonationLogic.BANK_ID)[0], Integer.toString(returnedBloodDonation.getBloodBank().getId()));
         assertEquals(sampleMap.get(BloodDonationLogic.BLOOD_GROUP)[0], returnedBloodDonation.getBloodGroup().name());
         assertEquals(sampleMap.get(BloodDonationLogic.CREATED)[0], logic.convertDateToString(returnedBloodDonation.getCreated()));
         assertEquals(sampleMap.get(BloodDonationLogic.MILLILITERS)[0], Integer.toString(returnedBloodDonation.getMilliliters()));
@@ -247,7 +245,7 @@ class BloodDonationTest {
 
         Map<String, String[]> sampleMap = new HashMap<>();
 
-        sampleMap.put(BloodDonationLogic.BANK_ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
+        sampleMap.put(BloodDonationLogic.ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
         sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
         sampleMap.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
         sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
