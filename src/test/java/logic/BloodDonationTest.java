@@ -238,4 +238,117 @@ class BloodDonationTest {
         logic.delete(returnedBloodDonation);
     }
 
+    @Test
+    final void testCreateEntity() {
+
+        Map<String, String[]> sampleMap = new HashMap<>();
+        
+        sampleMap.put(BloodDonationLogic.BANK_ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
+        sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
+        sampleMap.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
+        sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
+        sampleMap.put(BloodDonationLogic.RHESUS_FACTOR, new String[]{expectedEntity.getRhd().name()});
+
+        BloodDonation returnedBloodDonation = logic.createEntity(sampleMap);
+        returnedBloodDonation.setBloodBank(expectedEntity.getBloodBank());
+        
+        assertBloodDonationEquals( expectedEntity, returnedBloodDonation );
+    }
+    
+    @Test
+    final void testCreateEntityNullAndEmptyValues() {
+        Map<String, String[]> sampleMap = new HashMap<>();
+        Consumer<Map<String, String[]>> fillMap = ( Map<String, String[]> map ) -> {
+            map.clear();
+            map.put(BloodDonationLogic.BANK_ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
+        map.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
+        map.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
+        map.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
+        map.put(BloodDonationLogic.RHESUS_FACTOR, new String[]{expectedEntity.getRhd().name()});
+        };
+
+        //idealy every test should be in its own method
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.BANK_ID, null );
+        assertThrows( NullPointerException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.BANK_ID, new String[]{} );
+        assertThrows( IndexOutOfBoundsException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.BLOOD_GROUP, null );
+        assertThrows( NullPointerException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.BLOOD_GROUP, new String[]{} );
+        assertThrows( IndexOutOfBoundsException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.CREATED, null );
+        assertThrows( NullPointerException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.CREATED, new String[]{} );
+        assertThrows( IndexOutOfBoundsException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.MILLILITERS, null );
+        assertThrows( NullPointerException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.MILLILITERS, new String[]{} );
+        assertThrows( IndexOutOfBoundsException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.RHESUS_FACTOR, null );
+        assertThrows( NullPointerException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.RHESUS_FACTOR, new String[]{} );
+        assertThrows( IndexOutOfBoundsException.class, () -> logic.createEntity( sampleMap ) );
+    }
+    
+    @Test
+    final void testCreateEntityBadLengthValues() {
+        Map<String, String[]> sampleMap = new HashMap<>();
+        Consumer<Map<String, String[]>> fillMap = ( Map<String, String[]> map ) -> {
+            map.clear();
+            map.put(BloodDonationLogic.BANK_ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
+        map.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
+        map.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
+        map.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
+        map.put(BloodDonationLogic.RHESUS_FACTOR, new String[]{expectedEntity.getRhd().name()});
+        };
+
+        IntFunction<String> generateString = ( int length ) -> {
+            //https://www.baeldung.com/java-random-string#java8-alphabetic
+            //from 97 inclusive to 123 exclusive
+            return new Random().ints( 'a', 'z' + 1 ).limit( length )
+                    .collect( StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append )
+                    .toString();
+        };
+
+        //idealy every test should be in its own method
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.BANK_ID, new String[]{ "" } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.BANK_ID, new String[]{ "12b" } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.BLOOD_GROUP, new String[]{ "" } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.BLOOD_GROUP, new String[]{ generateString.apply( 46 ) } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.CREATED, new String[]{ "" } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.CREATED, new String[]{ generateString.apply( 46 ) } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.MILLILITERS, new String[]{ "" } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace( BloodDonationLogic.MILLILITERS, new String[]{ generateString.apply( 46 ) } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+
+        fillMap.accept( sampleMap );
+        sampleMap.replace( BloodDonationLogic.RHESUS_FACTOR, new String[]{ "" } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+        sampleMap.replace(  BloodDonationLogic.RHESUS_FACTOR, new String[]{ generateString.apply( 46 ) } );
+        assertThrows( ValidationException.class, () -> logic.createEntity( sampleMap ) );
+    }
+        
 }
