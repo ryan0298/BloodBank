@@ -218,7 +218,6 @@ class BloodDonationTest {
 
     @Test
     final void testCreateEntityAndAdd() {
-
         Map<String, String[]> sampleMap = new HashMap<>();
 
         sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
