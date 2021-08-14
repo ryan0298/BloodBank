@@ -46,7 +46,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
      * returns the donation record instance with the same record ID from
      * database using DAL
      *
-     * @param personId the record id
+     * @param id the record id
      * @return DonationRecord donation record instance with the same record ID
      */
     @Override
@@ -58,7 +58,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
      * returns the donation record instances with the same value for tested from
      * database using DAL
      *
-     * @param personId the tested
+     * @param tested the tested
      * @return List<DonationRecord> donation record instances with the same
      * value for tested
      */
@@ -70,7 +70,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
      * returns the donation record instances with the same value for
      * administrator from database using DAL
      *
-     * @param personId the administrator
+     * @param administrator the administrator
      * @return List<DonationRecord> donation record instances with the same
      * value for administrator
      */
@@ -82,7 +82,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
      * returns the donation record instances with the same value for hospital
      * from database using DAL
      *
-     * @param personId the Hospital name
+     * @param username the Hospital name
      * @return List<DonationRecord> donation record instances with the same
      * value for hospital
      */
@@ -94,7 +94,7 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
      * returns the donation record instances with the same date value for
      * created from database using DAL
      *
-     * @param personId the date created
+     * @param created the date created
      * @return List<DonationRecord> donation record instances with the same date
      * value for created
      */

@@ -1,7 +1,5 @@
-
 package view;
 
-import entity.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -11,29 +9,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import logic.AccountLogic;
 import logic.LogicFactory;
 import logic.BloodBankLogic;
-import logic.BloodDonationLogic;
-import entity.BloodDonation;
 import entity.BloodBank;
-
+import logic.PersonLogic;
 
 /**
  *
  * @author William
+ * @author Milad Mobini
  */
-
-/*public static String OWNER_ID = "owner_id";
-public static String PRIVATELY_OWNED = "privately_owned";
-public static String ESTABLISHED = "established";
-public static String NAME : String = "name";
-public static String EMPLOYEE_COUNT = "employee_count";
-public static String ID = "id";*/
-@WebServlet( name = "CreateBloodBank", urlPatterns = { "/CreateBloodBankTable" } )
+@WebServlet(name = "CreateBloodBank", urlPatterns = {"/CreateBloodBank"})
 public class CreateBloodBank extends HttpServlet {
-            private String errorMessage = null;
-            private static final long serialVersionUID = 1L;
+
+    private String errorMessage = null;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -64,10 +54,9 @@ public class CreateBloodBank extends HttpServlet {
             out.printf("<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodBankLogic.OWNER_ID);
             out.println("<br>");
 
-     
             out.println("Privately Owned:<br>");
-            out.printf("<input type=\"radio\" name=\"%s\" value=\"+\">Is privately Owned<br>", BloodBankLogic.PRIVATELY_OWNED);
-            out.printf("<input type=\"radio\" name=\"%s\" value=\"-\" checked>Is not privately Owned<br>", BloodBankLogic.PRIVATELY_OWNED);
+            out.printf("<input type=\"radio\" name=\"%s\" value=\"true\">Is privately Owned<br>", BloodBankLogic.PRIVATELY_OWNED);
+            out.printf("<input type=\"radio\" name=\"%s\" value=\"false\" checked>Is not privately Owned<br>", BloodBankLogic.PRIVATELY_OWNED);
             out.println("<br>");
 
             out.println("Created:<br>");
@@ -77,13 +66,16 @@ public class CreateBloodBank extends HttpServlet {
             out.println("Blood Bank Name:<br>");
             out.printf("<input type=\"text\" name=\"%s\" value=\"\"><br>", BloodBankLogic.NAME);
             out.println("<br>");
-            
+
             out.println("Employee Count:<br>");
 
             out.printf("<input type=\"number\" name=\"%s\" value=\"\"><br>", BloodBankLogic.EMPLOYEE_COUNT);
             out.println("<br>");
+            out.println("<input type=\"submit\" name=\"view\" value=\"Add and View\">");
+            out.println("<input type=\"submit\" name=\"add\" value=\"Add\">");
+            out.println("</form>");
 
-                        if (errorMessage != null && !errorMessage.isEmpty()) {
+            if (errorMessage != null && !errorMessage.isEmpty()) {
                 out.println("<p color=red>");
                 out.println("<font color=red size=4px>");
                 out.println(errorMessage);
@@ -98,9 +90,16 @@ public class CreateBloodBank extends HttpServlet {
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");
-            }
+        }
 
-}
+    }
+
+    /**
+     * map the values of parameter to a string of keys and values
+     *
+     * @param m parameter list pair
+     * @return string representation
+     */
     private String toStringMap(Map<String, String[]> values) {
         StringBuilder builder = new StringBuilder();
         values.forEach((k, v) -> builder.append("Key=").append(k)
@@ -145,15 +144,18 @@ public class CreateBloodBank extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            log("POST");
-            BloodBankLogic aLogic = LogicFactory.getFor( "BloodBank" );
-            //person as a dependancy
-            try {
-                BloodBank account = aLogic.createEntity( request.getParameterMap() );
-                aLogic.add( account );
-            } catch( Exception ex ) {
-                errorMessage = ex.getMessage();
-            }
+        log("POST");
+        BloodBankLogic aLogic = LogicFactory.getFor("BloodBank");
+        //person as a dependancy
+        try {
+            BloodBank account = aLogic.createEntity(request.getParameterMap());
+            PersonLogic personLogic = LogicFactory.getFor("Person");
+            account.setOwner(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodBankLogic.OWNER_ID)[0])));
+
+            aLogic.add(account);
+        } catch (Exception ex) {
+            errorMessage = ex.getMessage();
+        }
 
         if (request.getParameter("add") != null) {
             //if add button is pressed return the same page
@@ -163,7 +165,6 @@ public class CreateBloodBank extends HttpServlet {
             response.sendRedirect("BloodBankTable");
         }
 
-        
     }
 
     /**
