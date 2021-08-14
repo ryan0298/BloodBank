@@ -1,8 +1,6 @@
 package view;
 
-
 import entity.DonationRecord;
-import entity.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -68,7 +66,7 @@ public class CreateDonationRecord extends HttpServlet {
             out.printf("<input type=\"text\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.HOSPITAL);
             out.println("<br>");
             out.println("Created:<br>");
-            out.printf( "<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.CREATED );
+            out.printf("<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", DonationRecordLogic.CREATED);
             out.println("<br>");
             out.println("<input type=\"submit\" name=\"view\" value=\"Add and View\">");
             out.println("<input type=\"submit\" name=\"add\" value=\"Add\">");
@@ -91,6 +89,12 @@ public class CreateDonationRecord extends HttpServlet {
         }
     }
 
+    /**
+     * map the values of parameter to a string of keys and values
+     *
+     * @param m parameter list pair
+     * @return string representation
+     */
     private String toStringMap(Map<String, String[]> values) {
         StringBuilder builder = new StringBuilder();
         values.forEach((k, v) -> builder.append("Key=").append(k)
@@ -137,19 +141,19 @@ public class CreateDonationRecord extends HttpServlet {
             throws ServletException, IOException {
         log("POST");
         DonationRecordLogic drLogic = LogicFactory.getFor("DonationRecord");
-            try {
-                DonationRecord donationRecord = drLogic.createEntity(request.getParameterMap());
-                
-                BloodDonationLogic bloodDonationLogic = LogicFactory.getFor( "BloodDonation" );
-                donationRecord.setBloodDonation(bloodDonationLogic.getWithId(Integer.parseInt(request.getParameterMap().get(DonationRecordLogic.DONATION_ID)[0])));
-                
-                PersonLogic personLogic = LogicFactory.getFor( "Person" );
-                donationRecord.setPerson(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(DonationRecordLogic.PERSON_ID)[0])));
-                
-                drLogic.add(donationRecord);
-            } catch (Exception ex) {
-                errorMessage = ex.getMessage();
-            }
+        try {
+            DonationRecord donationRecord = drLogic.createEntity(request.getParameterMap());
+
+            BloodDonationLogic bloodDonationLogic = LogicFactory.getFor("BloodDonation");
+            donationRecord.setBloodDonation(bloodDonationLogic.getWithId(Integer.parseInt(request.getParameterMap().get(DonationRecordLogic.DONATION_ID)[0])));
+
+            PersonLogic personLogic = LogicFactory.getFor("Person");
+            donationRecord.setPerson(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(DonationRecordLogic.PERSON_ID)[0])));
+
+            drLogic.add(donationRecord);
+        } catch (Exception ex) {
+            errorMessage = ex.getMessage();
+        }
         if (request.getParameter("add") != null) {
             //if add button is pressed return the same page
             processRequest(request, response);

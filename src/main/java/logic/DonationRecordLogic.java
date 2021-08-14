@@ -1,23 +1,14 @@
 package logic;
 
 import common.ValidationException;
-import dal.AccountDAL;
-import dal.BloodDonationDAL;
 import dal.DonationRecordDAL;
-import entity.Account;
-import entity.BloodDonation;
 import entity.DonationRecord;
-import entity.Person;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.ObjIntConsumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -33,44 +24,114 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
     public static final String CREATED = "created";
     public static final String ID = "record_id";
 
+    /**
+     * Constructor for DonationRecordLogic
+     */
     DonationRecordLogic() {
         super(new DonationRecordDAL());
     }
 
+    /**
+     * returns all the instance of donation record from database using DAL
+     *
+     * @return List<DonationRecord> all the instance of donation record from
+     * database
+     */
     @Override
     public List<DonationRecord> getAll() {
         return get(() -> dal().findAll());
     }
 
+    /**
+     * returns the donation record instance with the same record ID from
+     * database using DAL
+     *
+     * @param personId the record id
+     * @return DonationRecord donation record instance with the same record ID
+     */
     @Override
     public DonationRecord getWithId(int id) {
         return get(() -> dal().findById(id));
     }
 
+    /**
+     * returns the donation record instances with the same value for tested from
+     * database using DAL
+     *
+     * @param personId the tested
+     * @return List<DonationRecord> donation record instances with the same
+     * value for tested
+     */
     public List<DonationRecord> getDonationRecordWithTested(boolean tested) {
         return get(() -> dal().findByTested(tested));
     }
 
+    /**
+     * returns the donation record instances with the same value for
+     * administrator from database using DAL
+     *
+     * @param personId the administrator
+     * @return List<DonationRecord> donation record instances with the same
+     * value for administrator
+     */
     public List<DonationRecord> getDonationRecordWithAdministrator(String administrator) {
         return get(() -> dal().findByAdministrator(administrator));
     }
 
+    /**
+     * returns the donation record instances with the same value for hospital
+     * from database using DAL
+     *
+     * @param personId the Hospital name
+     * @return List<DonationRecord> donation record instances with the same
+     * value for hospital
+     */
     public List<DonationRecord> getDonationRecordWithHospital(String username) {
         return get(() -> dal().findByHospital(username));
     }
 
+    /**
+     * returns the donation record instances with the same date value for
+     * created from database using DAL
+     *
+     * @param personId the date created
+     * @return List<DonationRecord> donation record instances with the same date
+     * value for created
+     */
     public List<DonationRecord> getDonationRecordsWithCreated(Date created) {
         return get(() -> dal().findByCreated(created));
     }
 
+    /**
+     * returns the donation record instances with the same value for person Id
+     * from database using DAL
+     *
+     * @param personId the person id
+     * @return List<DonationRecord> donation record instances with the same
+     * value for person Id
+     */
     public List<DonationRecord> getDonationRecordsWithPerson(int personId) {
         return get(() -> dal().findByPerson(personId));
     }
 
+    /**
+     * returns the donation record instances with the same value for donation Id
+     * from database using DAL
+     *
+     * @param donationId the donation id
+     * @return List<DonationRecord> donation record instances with the same
+     * value for donation Id
+     */
     public List<DonationRecord> getDonationRecordsWithDonation(int donationId) {
         return get(() -> dal().findByDonation(donationId));
     }
 
+    /**
+     * create a donation record entity from a map of string of all values
+     *
+     * @param parameterMap a map of all values
+     * @return the expected donation record instance
+     */
     @Override
     public DonationRecord createEntity(Map<String, String[]> parameterMap) {
         Objects.requireNonNull(parameterMap, "parameterMap cannot be null");
@@ -117,16 +178,32 @@ public class DonationRecordLogic extends GenericLogic<DonationRecord, DonationRe
         return entity;
     }
 
+    /**
+     * get all the column names for donation record for table view
+     *
+     * @return List<String> list of names of columns
+     */
     @Override
     public List<String> getColumnNames() {
         return Arrays.asList("ID", "Person ID", "Blood Donation ID", "Tested", "Administrator", "Hospital", "Created");
     }
 
+    /**
+     * get all the column names
+     *
+     * @return List<String> list of all column names
+     */
     @Override
     public List<String> getColumnCodes() {
         return Arrays.asList(ID, PERSON_ID, DONATION_ID, TESTED, ADMINISTRATOR, HOSPITAL, CREATED);
     }
 
+    /**
+     * extract the date from a record and returns it as a list
+     *
+     * @param e the record
+     * @return List<?> list of extracted values
+     */
     @Override
     public List<?> extractDataAsList(DonationRecord e) {
         return Arrays.asList(

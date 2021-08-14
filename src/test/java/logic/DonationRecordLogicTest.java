@@ -35,20 +35,36 @@ import org.opentest4j.AssertionFailedError;
  * @author Shariar (Shawn) Emami
  */
 class DonationRecordLogicTest {
-    
+
     private DonationRecordLogic logic;
     private DonationRecord expectedEntity;
 
+    /**
+     * runs before start of class and establish the database connection
+     *
+     * @throws Exception
+     */
     @BeforeAll
     final static void setUpBeforeClass() throws Exception {
         TomcatStartUp.createTomcat("/SimpleBloodBank", "common.ServletListener", "simplebloodbank-PU-test");
     }
 
+    /**
+     * runs after the class terminates and destroys the database connection
+     *
+     * @throws Exception
+     */
     @AfterAll
     final static void tearDownAfterClass() throws Exception {
         TomcatStartUp.stopAndDestroyTomcat();
     }
 
+    /**
+     * runs before each test, in this method we create a new entity with all its
+     * dependencies which we use as our expected entity to test the methods
+     *
+     * @throws Exception
+     */
     @BeforeEach
     final void setUp() throws Exception {
 
@@ -118,6 +134,11 @@ class DonationRecordLogicTest {
         em.close();
     }
 
+    /**
+     * runs after each method and removes the expected entity
+     *
+     * @throws Exception
+     */
     @AfterEach
     final void tearDown() throws Exception {
         if (expectedEntity != null) {
@@ -125,6 +146,9 @@ class DonationRecordLogicTest {
         }
     }
 
+    /**
+     * test the getAll method from the donation record logic
+     */
     @Test
     final void testGetAll() {
         //get all the records from the DB
@@ -143,6 +167,12 @@ class DonationRecordLogicTest {
         assertEquals(originalSize - 1, list.size());
     }
 
+    /**
+     * checks if two instance of Donation Record have the same value
+     *
+     * @param expected entity one
+     * @param actual entity two
+     */
     private void assertDonationRecordEquals(DonationRecord expected, DonationRecord actual) {
         //assert all field to guarantee they are the same
         assertEquals(expected.getId(), actual.getId());
@@ -154,6 +184,9 @@ class DonationRecordLogicTest {
         assertEquals(expected.getPerson().getId(), actual.getPerson().getId());
     }
 
+    /**
+     * test the getWithId method from the donation record logic
+     */
     @Test
     final void testGetWithId() {
         //using the id of test record get another record from logic
@@ -163,6 +196,10 @@ class DonationRecordLogicTest {
         assertDonationRecordEquals(expectedEntity, returnedDonationRecord);
     }
 
+    /**
+     * test the getDonationRecordWithTested function from the donation record
+     * factory
+     */
     @Test
     final void testGetDonationRecordWithTested() {
         int foundFull = 0;
@@ -178,6 +215,10 @@ class DonationRecordLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * test the getDonationRecordWithAdministrator function from the donation
+     * record factory
+     */
     @Test
     final void getDonationRecordWithAdministrator() {
         int foundFull = 0;
@@ -193,6 +234,10 @@ class DonationRecordLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * test the getDonationRecordWithHospital function from the donation record
+     * factory
+     */
     @Test
     final void getDonationRecordWithHospital() {
         int foundFull = 0;
@@ -208,6 +253,10 @@ class DonationRecordLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * test the getDonationRecordsWithCreated function from the donation record
+     * factory
+     */
     @Test
     final void getDonationRecordsWithCreated() {
         int foundFull = 0;
@@ -223,6 +272,10 @@ class DonationRecordLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * test the getDonationRecordsWithPerson function from the donation record
+     * factory
+     */
     @Test
     final void getDonationRecordsWithPerson() {
         int foundFull = 0;
@@ -238,6 +291,10 @@ class DonationRecordLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * test the getDonationRecordsWithDonation function from the donation record
+     * factory
+     */
     @Test
     final void getDonationRecordsWithDonation() {
         int foundFull = 0;
@@ -253,6 +310,9 @@ class DonationRecordLogicTest {
         assertEquals(1, foundFull, "if zero means not found, if more than one means duplicate");
     }
 
+    /**
+     * test the createEntity method from the donation record logic
+     */
     @Test
     final void testCreateEntity() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -271,6 +331,10 @@ class DonationRecordLogicTest {
         assertDonationRecordEquals(expectedEntity, returnedDonationRecord);
     }
 
+    /**
+     * test the createEntity method from the donation record logic with empty
+     * and null values
+     */
     @Test
     final void testCreateEntityNullAndEmptyValues() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -289,7 +353,7 @@ class DonationRecordLogicTest {
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
         sampleMap.replace(DonationRecordLogic.ID, new String[]{});
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
-        
+
         fillMap.accept(sampleMap);
         sampleMap.replace(DonationRecordLogic.TESTED, null);
         assertThrows(NullPointerException.class, () -> logic.createEntity(sampleMap));
@@ -315,6 +379,10 @@ class DonationRecordLogicTest {
         assertThrows(IndexOutOfBoundsException.class, () -> logic.createEntity(sampleMap));
     }
 
+    /**
+     * test the createEntity method from the donation record logic with values
+     * with improper lengths
+     */
     @Test
     final void testCreateEntityBadLengthValues() {
         Map<String, String[]> sampleMap = new HashMap<>();
@@ -356,6 +424,10 @@ class DonationRecordLogicTest {
 
     }
 
+    /**
+     * test the createEntity method from the donation record logic with values
+     * close to edge of accepted values
+     */
     @Test
     final void testCreateEntityEdgeValues() {
         IntFunction<String> generateString = (int length) -> {
@@ -395,18 +467,35 @@ class DonationRecordLogicTest {
         assertEquals(sampleMap.get(DonationRecordLogic.HOSPITAL)[0], returnedDonationRecord.getHospital());
     }
 
+    /**
+     * test the getColumnNames method from the donation record logic
+     */
     @Test
     final void testGetColumnNames() {
         List<String> list = logic.getColumnNames();
         assertEquals(Arrays.asList("ID", "Person ID", "Blood Donation ID", "Tested", "Administrator", "Hospital", "Created"), list);
     }
 
+    /**
+     * test the getColumnCodes method from the donation record logic
+     */
     @Test
     final void testGetColumnCodes() {
         List<String> list = logic.getColumnCodes();
-        assertEquals(Arrays.asList(DonationRecordLogic.ID, DonationRecordLogic.PERSON_ID, DonationRecordLogic.DONATION_ID, DonationRecordLogic.TESTED, DonationRecordLogic.ADMINISTRATOR, DonationRecordLogic.HOSPITAL, DonationRecordLogic.CREATED), list);
+        assertEquals(Arrays.asList(
+                DonationRecordLogic.ID,
+                DonationRecordLogic.PERSON_ID,
+                DonationRecordLogic.DONATION_ID,
+                DonationRecordLogic.TESTED,
+                DonationRecordLogic.ADMINISTRATOR,
+                DonationRecordLogic.HOSPITAL,
+                DonationRecordLogic.CREATED),
+                list);
     }
 
+    /**
+     * test the extractDataAsList method from the donation record logic
+     */
     @Test
     final void testExtractDataAsList() {
         List<?> list = logic.extractDataAsList(expectedEntity);
