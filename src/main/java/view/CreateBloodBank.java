@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import logic.LogicFactory;
 import logic.BloodBankLogic;
 import entity.BloodBank;
+import entity.Person;
 import logic.PersonLogic;
 
 /**
@@ -145,14 +146,22 @@ public class CreateBloodBank extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         log("POST");
-        BloodBankLogic aLogic = LogicFactory.getFor("BloodBank");
-        //person as a dependancy
+        BloodBankLogic bankLogic = LogicFactory.getFor("BloodBank");
         try {
-            BloodBank bank = aLogic.createEntity(request.getParameterMap());
-            PersonLogic personLogic = LogicFactory.getFor("Person");
-            bank.setOwner(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodBankLogic.OWNER_ID)[0])));
+            BloodBank bank = bankLogic.createEntity(request.getParameterMap());
 
-            aLogic.add(bank);
+            if (bankLogic.getBloodBanksWithOwner(Integer.parseInt(request.getParameterMap().get(BloodBankLogic.OWNER_ID)[0])) == null) {
+                try {
+                    PersonLogic personLogic = LogicFactory.getFor("Person");
+                    bank.setOwner(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodBankLogic.OWNER_ID)[0])));
+                    bankLogic.add(bank);
+                } catch (Exception ex) {
+                    errorMessage = ex.getMessage();
+                }
+            } else {
+                //if duplicate print the error message
+                errorMessage = "Owner with ID \"" +request.getParameterMap().get(BloodBankLogic.OWNER_ID)[0] + "\" already has a blood bank";
+            }
         } catch (Exception ex) {
             errorMessage = ex.getMessage();
         }
