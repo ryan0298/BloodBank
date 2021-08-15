@@ -195,7 +195,6 @@ public class DonateBloodFrom extends HttpServlet {
                 BloodBank bloodBank = bloodBankLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodDonationLogic.BANK_ID)[0]));
                 
                 Person person = personLogic.createEntity( request.getParameterMap() );
-                person.setBloodBank(bloodBank);
                 personLogic.add( person );
 
                 BloodDonation bloodDonation = bloodDonationLogic.createEntity( request.getParameterMap() );

@@ -55,8 +55,8 @@ public class CreateBloodBank extends HttpServlet {
             out.println("<br>");
 
             out.println("Privately Owned:<br>");
-            out.printf("<input type=\"radio\" name=\"%s\" value=\"true\">Is privately Owned<br>", BloodBankLogic.PRIVATELY_OWNED);
-            out.printf("<input type=\"radio\" name=\"%s\" value=\"false\" checked>Is not privately Owned<br>", BloodBankLogic.PRIVATELY_OWNED);
+            out.printf("<input type=\"radio\" name=\"%s\" value=\"true\">Yes<br>", BloodBankLogic.PRIVATELY_OWNED);
+            out.printf("<input type=\"radio\" name=\"%s\" value=\"false\" checked>No<br>", BloodBankLogic.PRIVATELY_OWNED);
             out.println("<br>");
 
             out.println("Created:<br>");
@@ -148,11 +148,11 @@ public class CreateBloodBank extends HttpServlet {
         BloodBankLogic aLogic = LogicFactory.getFor("BloodBank");
         //person as a dependancy
         try {
-            BloodBank account = aLogic.createEntity(request.getParameterMap());
+            BloodBank bank = aLogic.createEntity(request.getParameterMap());
             PersonLogic personLogic = LogicFactory.getFor("Person");
-            account.setOwner(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodBankLogic.OWNER_ID)[0])));
+            bank.setOwner(personLogic.getWithId(Integer.parseInt(request.getParameterMap().get(BloodBankLogic.OWNER_ID)[0])));
 
-            aLogic.add(account);
+            aLogic.add(bank);
         } catch (Exception ex) {
             errorMessage = ex.getMessage();
         }

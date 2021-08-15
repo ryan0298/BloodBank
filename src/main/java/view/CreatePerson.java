@@ -49,10 +49,6 @@ public class CreatePerson extends HttpServlet {
             out.println("<div style=\"text-align: center;\">");
             out.println("<div style=\"display: inline-block; text-align: left;\">");
             out.println("<form method=\"post\">");
-            out.println("Blood Bank ID:<br>");
-            out.printf("<input type=\"number\" name=\"%s\" value=\"\"><br>", PersonLogic.BLOODBANK_ID);
-            out.println("<br>");
-
             out.println("Birth Date:<br>");
             out.printf("<input type=\"datetime-local\" pattern=\"yyyy-MM-dd'T'kk:mm:ss\" step=\"1\" name=\"%s\" value=\"\"><br>", PersonLogic.BIRTH);
             out.println("<br>");
@@ -141,12 +137,9 @@ public class CreatePerson extends HttpServlet {
         log("POST");
 
         PersonLogic personLogic = LogicFactory.getFor("Person");
-        BloodBankLogic bloodBankLogic = LogicFactory.getFor("BloodBank");
 
         try {
             Person person = personLogic.createEntity(request.getParameterMap());
-            BloodBank bloodBank = bloodBankLogic.getWithId(Integer.parseInt(request.getParameterMap().get(PersonLogic.BLOODBANK_ID)[0]));
-            person.setBloodBank(bloodBank);
 
             personLogic.add(person);
         } catch (Exception ex) {
