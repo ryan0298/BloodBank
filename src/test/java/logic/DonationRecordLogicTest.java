@@ -464,7 +464,7 @@ class DonationRecordLogicTest {
         assertEquals(sampleMap.get(DonationRecordLogic.CREATED)[0], logic.convertDateToString(returnedDonationRecord.getCreated()));
 
         sampleMap = new HashMap<>();
-        sampleMap.put(DonationRecordLogic.ID, new String[]{Integer.toString(1)});
+        sampleMap.put(DonationRecordLogic.ID, new String[]{Integer.toString(Integer.MAX_VALUE)});
         sampleMap.put(DonationRecordLogic.TESTED, new String[]{"false"});
         sampleMap.put(DonationRecordLogic.ADMINISTRATOR, new String[]{generateString.apply(45)});
         sampleMap.put(DonationRecordLogic.HOSPITAL, new String[]{generateString.apply(65)});

@@ -145,17 +145,13 @@ public class BloodBankLogic extends GenericLogic<BloodBank, BloodBankDAL> {
             }
         };
 
-        //String ownerID = paremeterMap.get(OWNER_ID)[0];
         String privatelyOwned = paremeterMap.get(PRIVATELY_OWNED)[0];
         String established = paremeterMap.get(ESTABLISHED)[0];//initial date with T placeholder
         String newEstablishedRemovedT = established.replace("T", " ");//Updated created without the T placeholder
         String name = paremeterMap.get(NAME)[0];
         String employeeCount = paremeterMap.get(EMPLOYEE_COUNT)[0];
-        //String id = paremeterMap.get(ID)[0];
 
-        validator.accept(privatelyOwned, 45);
-        validator.accept(established, 45);
-        validator.accept(name, 45);
+        validator.accept(name, 100);
         validator.accept(employeeCount, 45);
 
         entity.setPrivatelyOwned(Boolean.valueOf(privatelyOwned));

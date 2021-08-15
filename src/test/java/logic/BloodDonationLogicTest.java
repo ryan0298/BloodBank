@@ -34,7 +34,7 @@ import entity.RhesusFactor;
  * @author Milad Mobini
  * @author Shariar (Shawn) Emami
  */
-class BloodDonationTest {
+class BloodDonationLogicTest {
 
     private BloodDonationLogic logic;
     private BloodDonation expectedEntity;
@@ -359,10 +359,10 @@ class BloodDonationTest {
 
         sampleMap = new HashMap<>();
 
-        sampleMap.put(BloodDonationLogic.ID, new String[]{Integer.toString(1)});
+        sampleMap.put(BloodDonationLogic.ID, new String[]{Integer.toString(Integer.MAX_VALUE)});
         sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
         sampleMap.put(BloodDonationLogic.BLOOD_GROUP, new String[]{"A"});
-        sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(1)});
+        sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(Integer.MAX_VALUE)});
         sampleMap.put(BloodDonationLogic.RHESUS_FACTOR, new String[]{expectedEntity.getRhd().name()});
 
         //idealy every test should be in its own method
@@ -406,10 +406,4 @@ class BloodDonationTest {
         assertEquals(expectedEntity.getCreated(), list.get(4));
         assertEquals(expectedEntity.getId(), list.get(5));
     }
-
-//    sampleMap.put(BloodDonationLogic.BANK_ID, new String[]{Integer.toString(expectedEntity.getBloodBank().getId())});
-//        sampleMap.put(BloodDonationLogic.CREATED, new String[]{logic.convertDateToString(expectedEntity.getCreated())});
-//        sampleMap.put(BloodDonationLogic.BLOOD_GROUP, new String[]{expectedEntity.getBloodGroup().name()});
-//        sampleMap.put(BloodDonationLogic.MILLILITERS, new String[]{Integer.toString(expectedEntity.getMilliliters())});
-//        sampleMap.put(BloodDonationLogic.RHESUS_FACTOR, new String[]{expectedEntity.getRhd().name()});
 }
